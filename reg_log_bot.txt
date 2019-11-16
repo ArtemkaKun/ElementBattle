@@ -1,0 +1,50 @@
+11-16-2019 13:22:15 User YUART, ID is 375806606, start bot, but this user already registered!
+11-16-2019 13:23:09 User YUART, ID is 375806606, start bot
+11-16-2019 13:23:14 User ElementBattlesBot, ID is 970898716, was registered
+11-16-2019 13:38:58 User YUART, ID is 375806606, start bot
+11-16-2019 13:39:09 User ElementBattlesBot, ID is 970898716, try to register, but there is user with same id already!
+11-16-2019 13:39:58 User YUART, ID is 375806606, start bot
+11-16-2019 13:40:01 User ElementBattlesBot, ID is 970898716, was registered
+11-16-2019 13:40:48 User YUART, ID is 375806606, start bot
+11-16-2019 13:40:59 User ElementBattlesBot, ID is 970898716, try to register, but there is user with same id already!
+11-16-2019 13:41:58 User YUART, ID is 375806606, start bot
+11-16-2019 13:42:00 User ElementBattlesBot, ID is 970898716, was registered
+11-16-2019 13:44:41 User YUART, ID is 375806606, start bot
+11-16-2019 13:44:48 User ElementBattlesBot, ID is 970898716, was registered
+11-16-2019 13:45:48 User YUART, ID is 375806606, start bot
+11-16-2019 13:46:00 User ElementBattlesBot, ID is 970898716, try to register, but there is user with same id already!
+11-16-2019 13:47:36 User YUART, ID is 375806606, start bot
+11-16-2019 13:47:39 User ElementBattlesBot, ID is 970898716, was registered
+11-16-2019 13:52:17 User gykalo, ID is 796900944, start bot
+11-16-2019 13:52:25 User ElementBattlesBot, ID is 970898716, was registered
+11-16-2019 13:54:39 User YUART, ID is 375806606, start bot
+11-16-2019 14:09:51 User YUART, ID is 375806606, start bot
+11-16-2019 14:13:03 User YUART, ID is 375806606, start bot
+11-16-2019 14:13:05 User ElementBattlesBot, ID is 375806606, was registered
+11-16-2019 14:13:32 User YUART, ID is 375806606, start bot, but this user already registered!
+11-16-2019 14:17:12 User YUART, ID is 375806606, start bot
+11-16-2019 14:17:15 User YUART, ID is 375806606, was registered
+11-16-2019 14:29:13 User YUART, ID is 375806606, start bot
+11-16-2019 14:29:23 User YUART, ID is 375806606, was registered
+11-16-2019 14:49:42 User YUART, ID is 375806606, start bot
+11-16-2019 14:49:44 User YUART, ID is 375806606, was registered
+11-16-2019 14:52:05 User YUART, ID is 375806606, start bot, but this user already registered!
+11-16-2019 14:52:29 User YUART, ID is 375806606, start bot
+11-16-2019 14:52:31 User YUART, ID is 375806606, was registered
+11-16-2019 15:23:46 User YUART, ID is 375806606, start bot
+11-16-2019 15:23:53 User YUART, ID is 375806606, was registered
+11-16-2019 15:24:08 User YUART, ID is 375806606, has answer on first question [1, 1, 1]!
+11-16-2019 20:31:54 User YUART, ID is 375806606, start bot
+11-16-2019 20:31:58 User YUART, ID is 375806606, was registered
+11-16-2019 20:32:01 User YUART, ID is 375806606, answer on first question [3, 0, 0]
+11-16-2019 20:44:52 User YUART, ID is 375806606, start bot
+11-16-2019 20:44:54 User YUART, ID is 375806606, was registered
+11-16-2019 20:44:58 User YUART, ID is 375806606, answer on first question [0, 0, 3]
+11-16-2019 20:45:01 User YUART, ID is 375806606, answer on first question [0, 2, 1]
+11-16-2019 22:00:33 User YUART, ID is 375806606, start bot
+11-16-2019 22:00:38 User YUART, ID is 375806606, was registered
+11-16-2019 22:00:48 User YUART, ID is 375806606, answer on quest1 [0, 0, 3]
+11-16-2019 22:00:51 User YUART, ID is 375806606, answer on quest2 [0, 2, 1]
+11-16-2019 22:00:57 User YUART, ID is 375806606, answer on quest3 [0, 0, 3]
+11-16-2019 22:01:01 User YUART, ID is 375806606, answer on quest4 [0, 0, 3]
+11-16-2019 22:01:03 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]

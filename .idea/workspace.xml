@@ -2,12 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e240eb0-7ddc-43d2-b695-a3c70fb1b2e0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/benchmark_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/benchmark_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/driver_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/driver_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/nulltime.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/nulltime.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/nulltime_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql/nulltime_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" afterDir="false" />
     </list>
@@ -43,7 +49,7 @@
   </component>
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GoLibraries">
     <option name="urls">
@@ -55,6 +61,7 @@
   <component name="ProjectId" id="1TANy9jZtageR7FegvLblOWHTOw" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultGoTemplateProperty" value="Go Application" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="configurable.Global.GOPATH.is.expanded" value="true" />
