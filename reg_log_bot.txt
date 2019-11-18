@@ -48,3 +48,31 @@
 11-16-2019 22:00:57 User YUART, ID is 375806606, answer on quest3 [0, 0, 3]
 11-16-2019 22:01:01 User YUART, ID is 375806606, answer on quest4 [0, 0, 3]
 11-16-2019 22:01:03 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]
+11-17-2019 12:36:30 User YUART, ID is 375806606, start bot
+11-17-2019 12:36:33 User YUART, ID is 375806606, was registered
+11-17-2019 12:36:38 User YUART, ID is 375806606, answer on quest1 [0, 0, 3]
+11-17-2019 12:36:41 User YUART, ID is 375806606, answer on quest2 [0, 2, 1]
+11-17-2019 12:36:44 User YUART, ID is 375806606, answer on quest3 [0, 0, 3]
+11-17-2019 12:36:52 User YUART, ID is 375806606, answer on quest4 [0, 0, 3]
+11-17-2019 12:36:54 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]
+11-17-2019 12:38:33 User YUART, ID is 375806606, start bot
+11-17-2019 12:38:35 User YUART, ID is 375806606, was registered
+11-17-2019 12:38:37 User YUART, ID is 375806606, answer on quest1 [0, 0, 3]
+11-17-2019 12:38:39 User YUART, ID is 375806606, answer on quest2 [0, 2, 1]
+11-17-2019 12:38:40 User YUART, ID is 375806606, answer on quest3 [0, 0, 3]
+11-17-2019 12:38:42 User YUART, ID is 375806606, answer on quest4 [0, 0, 3]
+11-17-2019 12:38:44 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]
+11-17-2019 12:40:32 User YUART, ID is 375806606, start bot
+11-17-2019 12:40:33 User YUART, ID is 375806606, was registered
+11-17-2019 12:40:35 User YUART, ID is 375806606, answer on quest1 [0, 0, 3]
+11-17-2019 12:40:36 User YUART, ID is 375806606, answer on quest2 [0, 2, 1]
+11-17-2019 12:40:38 User YUART, ID is 375806606, answer on quest3 [0, 0, 3]
+11-17-2019 12:40:39 User YUART, ID is 375806606, answer on quest4 [0, 0, 3]
+11-17-2019 12:40:41 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]
+11-17-2019 14:09:55 User YUART, ID is 375806606, start bot
+11-17-2019 14:09:57 User YUART, ID is 375806606, was registered
+11-17-2019 14:09:58 User YUART, ID is 375806606, answer on quest1 [0, 0, 3]
+11-17-2019 14:10:00 User YUART, ID is 375806606, answer on quest2 [0, 2, 1]
+11-17-2019 14:10:07 User YUART, ID is 375806606, answer on quest3 [0, 0, 3]
+11-17-2019 14:10:08 User YUART, ID is 375806606, answer on quest4 [0, 0, 3]
+11-17-2019 14:10:10 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]

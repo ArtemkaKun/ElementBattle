@@ -10,3 +10,8 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+*.idea
+adventure_log_bot.txt
+error_log_bot.txt
+reg_log_bot.txt

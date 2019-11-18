@@ -36,6 +36,33 @@ type UserStatsReg struct {
 	int int
 }
 
+type FullUserStats struct {
+	LVL int
+	EX_now int
+	EX_next_lvl int
+	HP float32
+	MANA float32
+	STAMINA float32
+	str int
+	agi int
+	int int
+	armor float32
+	stun float32
+	dodge float32
+	crit float32
+	fire int
+	water int
+	earth int
+	wind int
+	effect float32
+	magic_arm float32
+	meele_miss float32
+	range_miss float32
+	race string
+	energy int
+	skill_point int
+}
+
 var log_files = LogTypes{"reg_log_bot.txt", "error_log_bot.txt", "battle_log_bot.txt", "skill_log_bot.txt", "invertory_log_bot.txt", "adventure_log_bot.txt"}
 
 var reg_keyboard = tgbotapi.NewInlineKeyboardMarkup(
@@ -67,7 +94,7 @@ var second_quest_keyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardButtonData("I am an elf", "second_quest_elf"),
 	),
 	tgbotapi.NewInlineKeyboardRow(
-		tgbotapi.NewInlineKeyboardButtonData("I am a dworf", "second_quest_dworf"),
+		tgbotapi.NewInlineKeyboardButtonData("I am a dwarf", "second_quest_dwarf"),
 	),
 	tgbotapi.NewInlineKeyboardRow(
 		tgbotapi.NewInlineKeyboardButtonData("I am an orc", "second_quest_orc"),
@@ -213,13 +240,13 @@ func RegUser(my_db *sql.DB, user_info UserInfo) {
 		panic(err.Error())
 	}
 
-	stmtIns, err = my_db.Prepare("INSERT INTO users_stats VALUES (?, ?, ?, ?, ?, ?, ?)")
+	stmtIns, err = my_db.Prepare("INSERT INTO users_stats VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 
-	_, err = stmtIns.Exec(user_info.user_id, 1, 1, 1, 100, 100, 100)
+	_, err = stmtIns.Exec(user_info.user_id, 1, 0, 100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " ", 15, 1)
 	if err != nil {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -373,6 +400,301 @@ func WriteAnswers(my_db *sql.DB, user_id int, quest string) {
 		panic(err.Error())
 	}
 }
+func AddRace(my_db *sql.DB, user_id int, race string) {
+	stmtIns, err := my_db.Prepare("UPDATE users_stats SET race = ? WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	_, err = stmtIns.Exec(race, user_id)
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtIns.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+}
+func CalcStats(my_db *sql.DB, user_id int) {
+	question := fmt.Sprintf("UPDATE users_stats SET HP = ?, MANA = ?, STAMINA = ?, armor = ?, stun_chance = ?, dodge_chance = ?, crit_chance = ?, fire_element = ?, water_element = ?, earth_element = ?, wind_element = ?, effect_chance = ?, magic_armor = ?, meele_miss_chance = ?, range_miss_chance = ? WHERE user_id = ?")
+	stmtIns, err := my_db.Prepare(question)
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	completed_user_stats := TakeAttrib(my_db, user_id)
+	hp := 20 + float32(completed_user_stats.str) * 10 * 0.8
+	stamina := 10 + 5 * float32(completed_user_stats.str) * 0.5 + 5 * float32(completed_user_stats.agi) * 0.5
+	mana := 10 + 10 * float32(completed_user_stats.int) * 0.8
+	armor := 5 * float32(completed_user_stats.str) * 0.1
+	stun_chance := float32(completed_user_stats.str) * 0.05
+	dodge_chance := float32(completed_user_stats.agi) * 0.05
+	crit_chance := float32(completed_user_stats.agi) * 0.05
+	effect_chance := float32(completed_user_stats.int) * 0.05
+	magic_armor := float32(completed_user_stats.int) * 0.1 * 5
+	meele_miss_chance := float32(30)
+	range_miss_chance := float32(30)
+	fire_elem := 0
+	water_elem := 0
+	earth_elem := 0
+	wind_elem := 0
+	if (completed_user_stats.int) >= 10 {
+		fire_elem = 2
+		water_elem = 2
+		earth_elem = 2
+		wind_elem = 2
+	}
+
+	user_stats := FullUserStats{1, 0, 100, hp, mana, stamina, completed_user_stats.str, completed_user_stats.agi, completed_user_stats.int,armor, stun_chance,dodge_chance, crit_chance, fire_elem, water_elem, earth_elem, wind_elem, effect_chance, magic_armor, meele_miss_chance, range_miss_chance, " ", 15, 1}
+	_, err = stmtIns.Exec(user_stats.HP, user_stats.MANA, user_stats.STAMINA, user_stats.armor, user_stats.stun, user_stats.dodge, user_stats.crit, user_stats.fire, user_stats.water, user_stats.earth, user_stats.wind, user_stats.effect, user_stats.magic_arm, user_stats.meele_miss, user_stats.range_miss, user_id)
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtIns.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+}
+func TakeFullStats(my_db *sql.DB, user_id int) FullUserStats {
+	user_stats := FullUserStats{}
+	stmtOut, err := my_db.Prepare("SELECT LVL FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	var stats int
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.LVL = stats
+
+	stmtOut, err = my_db.Prepare("SELECT EX_now FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.EX_now = stats
+
+	stmtOut, err = my_db.Prepare("SELECT EX_next_lvl FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.EX_next_lvl = stats
+
+	stmtOut, err = my_db.Prepare("SELECT HP FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+	var float_stats float32
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.HP = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT MANA FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.MANA = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT STAMINA FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.STAMINA = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT strength FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.str = stats
+
+	stmtOut, err = my_db.Prepare("SELECT agility FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.agi = stats
+
+	stmtOut, err = my_db.Prepare("SELECT intelligence FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.int = stats
+
+	stmtOut, err = my_db.Prepare("SELECT armor FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.armor= float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT stun_chance FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.stun = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT dodge_chance FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.dodge = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT crit_chance FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.crit = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT fire_element FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.fire = stats
+
+	stmtOut, err = my_db.Prepare("SELECT water_element FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.water = stats
+
+	stmtOut, err = my_db.Prepare("SELECT earth_element FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.earth = stats
+
+	stmtOut, err = my_db.Prepare("SELECT wind_element FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.wind = stats
+
+	stmtOut, err = my_db.Prepare("SELECT effect_chance FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.effect = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT magic_armor FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.magic_arm = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT meele_miss_chance FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.meele_miss = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT range_miss_chance FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
+	user_stats.range_miss = float_stats
+
+	stmtOut, err = my_db.Prepare("SELECT race FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+	var string_stats string
+	err = stmtOut.QueryRow(user_id).Scan(&string_stats)
+	if (string_stats == " ") {
+		user_stats.race = "Unknown"
+	} else {
+		user_stats.race = string_stats
+	}
+
+	stmtOut, err = my_db.Prepare("SELECT energy FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.energy = stats
+
+	stmtOut, err = my_db.Prepare("SELECT skill_point FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(user_id).Scan(&stats)
+	user_stats.skill_point = stats
+
+	err = stmtOut.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	return user_stats
+}
 
 //------------------------------------------------------ DB SECTION END
 
@@ -407,7 +729,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 					msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
 					user_info := UserInfo{update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, update.CallbackQuery.From.LastName, update.CallbackQuery.From.FirstName, update.CallbackQuery.From.LanguageCode}
 					fmt.Print(user_info.user_id)
-					msg.Text = "Ok. I will ask you few questions. This information only for my raport, but tell my only the truth\n" +
+					msg.Text = "Ok. I will ask you few questions. This information only for my report, but tell my only the truth\n" +
 						"Firstly, I want to know why are you there."
 					if !RegCheck(database, user_info) {
 						log_writer := LogReq{time.Now(), fmt.Sprintf(" User %v, ID is %v, was registered", user_info.user_nickname, user_info.user_id)}
@@ -435,15 +757,19 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
 				case "second_quest_hum":
 					user_stats := UserStatsReg{1, 2, 0}
+					AddRace(database, update.CallbackQuery.From.ID, "Human")
 					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
 				case "second_quest_elf":
 					user_stats := UserStatsReg{0, 2, 1}
+					AddRace(database, update.CallbackQuery.From.ID, "Elf")
 					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
-				case "second_quest_dworf":
+				case "second_quest_dwarf":
 					user_stats := UserStatsReg{2, 0, 1}
+					AddRace(database, update.CallbackQuery.From.ID, "Dwarf")
 					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
 				case "second_quest_orc":
 					user_stats := UserStatsReg{2, 1, 0}
+					AddRace(database, update.CallbackQuery.From.ID, "Orc")
 					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
 				case "second_quest_silent":
 					user_stats := UserStatsReg{1, 1, 1}
@@ -484,7 +810,13 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 				case "fifth_quest_silent":
 					user_stats := UserStatsReg{1, 1, 1}
 					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
-
+				case "check_char_stat":
+					user_stast := TakeFullStats(database, update.CallbackQuery.From.ID)
+					msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
+					message := fmt.Sprintf("Your lvl: %v \nExperiense you have: %v \nExperience need to next lvl: %v \nSkill points you have: %v \nYour energy: %v \nYour race: %v \nYour HP: %v \nYour stamina: %v \nYour MP: %v \n\nAttributes\n\nYour strength: %v \nYour agility: %v \nYour intelligence: %v \nYour armor: %v \nYour magic armor: %v \nYour stun chance: %v%% \nYour crit chance: %v%% \nYour dodge chance: %v%% \nYour magic effect chance: %v%% \nYour meele miss chance: %v%% \nYour range miss chance: %v%% \n\nMagic elements\n\nFire element: %v \nWater element: %v \nEarth element: %v \nWind element: %v \n", user_stast.LVL, user_stast.EX_now, user_stast.EX_next_lvl, user_stast.skill_point, user_stast.energy, user_stast.race, user_stast.HP, user_stast.STAMINA, user_stast.MANA, user_stast.str, user_stast.agi, user_stast.int, user_stast.armor, user_stast.magic_arm, user_stast.stun, user_stast.crit, user_stast.dodge, user_stast.effect, user_stast.meele_miss, user_stast.range_miss, user_stast.fire, user_stast.water, user_stast.earth, user_stast.wind)
+					msg.Text = message
+					msg.ReplyMarkup = menu_keyboard
+					my_bot.Send(msg)
 			case "1":
 					area_act := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
 					area_act.Text = "You in forest"
@@ -575,6 +907,9 @@ func RegQuestion(chat_string int64, stats UserStatsReg, my_db *sql.DB, user_id i
 		msg.Text = next_quest
 		msg.ReplyMarkup = keys
 		WriteAnswers(my_db, user_id, question)
+		if question == "quest5" {
+			CalcStats(my_db, user_id)
+		}
 	} else {
 		msg.Text = "You are already answer!"
 	}
