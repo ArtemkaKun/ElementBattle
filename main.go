@@ -6,6 +6,7 @@ import (
 	"github.com/Syfaro/telegram-bot-api"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"math/rand"
 	"os"
 	"time"
 )
@@ -61,6 +62,31 @@ type FullUserStats struct {
 	race string
 	energy int
 	skill_point int
+}
+
+type FullEnemyStats struct {
+	ID int
+	name string
+	area_id int
+	LVL int
+	HP float32
+	MANA float32
+	STAMINA float32
+	str int
+	agi int
+	int int
+	armor float32
+	stun float32
+	dodge float32
+	crit float32
+	fire int
+	water int
+	earth int
+	wind int
+	effect float32
+	magic_arm float32
+	meele_miss float32
+	range_miss float32
 }
 
 var log_files = LogTypes{"reg_log_bot.txt", "error_log_bot.txt", "battle_log_bot.txt", "skill_log_bot.txt", "invertory_log_bot.txt", "adventure_log_bot.txt"}
@@ -167,7 +193,12 @@ var menu_keyboard = tgbotapi.NewInlineKeyboardMarkup(
 var area_keyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
 		tgbotapi.NewInlineKeyboardButtonData("Forest", "1"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
 		tgbotapi.NewInlineKeyboardButtonData("Mountains", "2"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Back to menu", "back"),
 	),
 )
 
@@ -175,12 +206,24 @@ var area_action_keyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
 		tgbotapi.NewInlineKeyboardButtonData("Find enemy", "enemy"),
 	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Training", "train"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Meditate", "meditate"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Rest", "rest"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Back to areas menu", "back_areas"),
+	),
 )
 
 var fight_keyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
-		tgbotapi.NewInlineKeyboardButtonData("Ujebat`", "attack"),
-		tgbotapi.NewInlineKeyboardButtonData("Zdat`", "defence"),
+		tgbotapi.NewInlineKeyboardButtonData("Attack", "attack"),
+		tgbotapi.NewInlineKeyboardButtonData("Defence", "defence"),
 	),
 )
 
@@ -264,6 +307,18 @@ func RegUser(my_db *sql.DB, user_info UserInfo) {
 		panic(err.Error())
 	}
 
+	stmtIns, err = my_db.Prepare("INSERT INTO buffer_areas VALUES(?, ?)")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	_, err = stmtIns.Exec(user_info.user_id, 0)
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
 	err = stmtIns.Close()
 	if err != nil {
 		ErrLogHandler(err.Error())
@@ -288,52 +343,33 @@ func RegCheck(my_db *sql.DB, user_info UserInfo) bool {
 		return false
 	}
 
+	err = stmtOut.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
 	if is_reg != 0 {
-		err = stmtOut.Close()
-		if err != nil {
-			ErrLogHandler(err.Error())
-			panic(err.Error())
-		}
 		return true
 	} else {
-		err = stmtOut.Close()
-		if err != nil {
-			ErrLogHandler(err.Error())
-			panic(err.Error())
-		}
 		return false
 	}
 
 }
+//take only str, agi, int
 func TakeAttrib(my_db *sql.DB, user_id int) UserStatsReg {
 	user_stats := UserStatsReg{}
-	stmtOut, err := my_db.Prepare("SELECT strength FROM users_stats WHERE user_id = ?")
+	stmtOut, err := my_db.Prepare("SELECT strength, agility, intelligence FROM users_stats WHERE user_id = ?")
 	if err != nil {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 
-	var stats int
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.str = stats
-
-	stmtOut, err = my_db.Prepare("SELECT agility FROM users_stats WHERE user_id = ?")
+	err = stmtOut.QueryRow(user_id).Scan(&user_stats.str, &user_stats.agi, &user_stats.int)
 	if err != nil {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.agi = stats
-
-	stmtOut, err = my_db.Prepare("SELECT intelligence FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.int = stats
 
 	err = stmtOut.Close()
 	if err != nil {
@@ -343,6 +379,7 @@ func TakeAttrib(my_db *sql.DB, user_id int) UserStatsReg {
 
 	return user_stats
 }
+//this func was used only for registration (when player answer the question)
 func AddAttrib(my_db *sql.DB, user_id int, new_stats UserStatsReg, old_stats UserStatsReg) {
 	stmtIns, err := my_db.Prepare("UPDATE users_stats SET strength = ?, agility = ?, intelligence = ? WHERE user_id = ?")
 	if err != nil {
@@ -356,12 +393,16 @@ func AddAttrib(my_db *sql.DB, user_id int, new_stats UserStatsReg, old_stats Use
 		panic(err.Error())
 	}
 
+	log_writer := LogReq{time.Now(), fmt.Sprintf(" User ID is %v, add atributes. Old attributes: %v, %v, %v. New attributes: %v, %v, %v", user_id, old_stats.str, old_stats.agi, old_stats.int, new_stats.str, new_stats.agi, new_stats.int)}
+	LogWrite(log_writer, log_files.reg_log)
+
 	err = stmtIns.Close()
 	if err != nil {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 }
+//if user try to answer one question two times, check, is question already answered
 func CheckAnswers(my_db *sql.DB, user_id int, quest string) int {
 	question := fmt.Sprintf("SELECT %v FROM users_reg_questions WHERE user_id = ?", quest)
 	stmtOut, err := my_db.Prepare(question)
@@ -380,6 +421,7 @@ func CheckAnswers(my_db *sql.DB, user_id int, quest string) int {
 
 	return is_answer
 }
+//mark question as answered
 func WriteAnswers(my_db *sql.DB, user_id int, quest string) {
 	question := fmt.Sprintf("UPDATE users_reg_questions SET %v = 1 WHERE user_id = ?", quest)
 	stmtIns, err := my_db.Prepare(question)
@@ -393,6 +435,9 @@ func WriteAnswers(my_db *sql.DB, user_id int, quest string) {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
+
+	log_writer := LogReq{time.Now(), fmt.Sprintf(" User ID is %v, answer the question %v", user_id, quest)}
+	LogWrite(log_writer, log_files.reg_log)
 
 	err = stmtIns.Close()
 	if err != nil {
@@ -413,13 +458,16 @@ func AddRace(my_db *sql.DB, user_id int, race string) {
 		panic(err.Error())
 	}
 
+	log_writer := LogReq{time.Now(), fmt.Sprintf(" User ID is %v, choose race %v", user_id, race)}
+	LogWrite(log_writer, log_files.reg_log)
+
 	err = stmtIns.Close()
 	if err != nil {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 }
-func CalcStats(my_db *sql.DB, user_id int) {
+func CalcStatsAfterReg(my_db *sql.DB, user_id int) {
 	question := fmt.Sprintf("UPDATE users_stats SET HP = ?, MANA = ?, STAMINA = ?, armor = ?, stun_chance = ?, dodge_chance = ?, crit_chance = ?, fire_element = ?, water_element = ?, earth_element = ?, wind_element = ?, effect_chance = ?, magic_armor = ?, meele_miss_chance = ?, range_miss_chance = ? WHERE user_id = ?")
 	stmtIns, err := my_db.Prepare(question)
 	if err != nil {
@@ -443,7 +491,7 @@ func CalcStats(my_db *sql.DB, user_id int) {
 	water_elem := 0
 	earth_elem := 0
 	wind_elem := 0
-	if (completed_user_stats.int) >= 10 {
+	if completed_user_stats.int >= 10 {
 		fire_elem = 2
 		water_elem = 2
 		earth_elem = 2
@@ -457,6 +505,9 @@ func CalcStats(my_db *sql.DB, user_id int) {
 		panic(err.Error())
 	}
 
+	log_writer := LogReq{time.Now(), fmt.Sprintf(" User ID is %v, complete the registration", user_id)}
+	LogWrite(log_writer, log_files.reg_log)
+
 	err = stmtIns.Close()
 	if err != nil {
 		ErrLogHandler(err.Error())
@@ -465,196 +516,13 @@ func CalcStats(my_db *sql.DB, user_id int) {
 }
 func TakeFullStats(my_db *sql.DB, user_id int) FullUserStats {
 	user_stats := FullUserStats{}
-	stmtOut, err := my_db.Prepare("SELECT LVL FROM users_stats WHERE user_id = ?")
+	stmtOut, err := my_db.Prepare("SELECT LVL, EX_now, EX_next_lvl, HP, MANA, STAMINA, strength, agility, intelligence, armor, stun_chance, dodge_chance, crit_chance, fire_element, water_element, earth_element, wind_element, effect_chance, magic_armor, meele_miss_chance, range_miss_chance, energy, skill_point FROM users_stats WHERE user_id = ?")
 	if err != nil {
 		ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 
-	var stats int
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.LVL = stats
-
-	stmtOut, err = my_db.Prepare("SELECT EX_now FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.EX_now = stats
-
-	stmtOut, err = my_db.Prepare("SELECT EX_next_lvl FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.EX_next_lvl = stats
-
-	stmtOut, err = my_db.Prepare("SELECT HP FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-	var float_stats float32
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.HP = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT MANA FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.MANA = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT STAMINA FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.STAMINA = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT strength FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.str = stats
-
-	stmtOut, err = my_db.Prepare("SELECT agility FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.agi = stats
-
-	stmtOut, err = my_db.Prepare("SELECT intelligence FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.int = stats
-
-	stmtOut, err = my_db.Prepare("SELECT armor FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.armor= float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT stun_chance FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.stun = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT dodge_chance FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.dodge = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT crit_chance FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.crit = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT fire_element FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.fire = stats
-
-	stmtOut, err = my_db.Prepare("SELECT water_element FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.water = stats
-
-	stmtOut, err = my_db.Prepare("SELECT earth_element FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.earth = stats
-
-	stmtOut, err = my_db.Prepare("SELECT wind_element FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.wind = stats
-
-	stmtOut, err = my_db.Prepare("SELECT effect_chance FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.effect = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT magic_armor FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.magic_arm = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT meele_miss_chance FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.meele_miss = float_stats
-
-	stmtOut, err = my_db.Prepare("SELECT range_miss_chance FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&float_stats)
-	user_stats.range_miss = float_stats
+	err = stmtOut.QueryRow(user_id).Scan(&user_stats.LVL, &user_stats.EX_now, &user_stats.EX_next_lvl, &user_stats.HP, &user_stats.MANA, &user_stats.STAMINA, &user_stats.str, &user_stats.agi, &user_stats.int, &user_stats.armor, &user_stats.stun, &user_stats.dodge, &user_stats.crit, &user_stats.fire, &user_stats.water, &user_stats.earth, &user_stats.wind, &user_stats.effect, &user_stats.magic_arm, &user_stats.meele_miss, &user_stats.range_miss, &user_stats.energy, &user_stats.skill_point)
 
 	stmtOut, err = my_db.Prepare("SELECT race FROM users_stats WHERE user_id = ?")
 	if err != nil {
@@ -669,24 +537,6 @@ func TakeFullStats(my_db *sql.DB, user_id int) FullUserStats {
 		user_stats.race = string_stats
 	}
 
-	stmtOut, err = my_db.Prepare("SELECT energy FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.energy = stats
-
-	stmtOut, err = my_db.Prepare("SELECT skill_point FROM users_stats WHERE user_id = ?")
-	if err != nil {
-		ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	err = stmtOut.QueryRow(user_id).Scan(&stats)
-	user_stats.skill_point = stats
-
 	err = stmtOut.Close()
 	if err != nil {
 		ErrLogHandler(err.Error())
@@ -694,6 +544,148 @@ func TakeFullStats(my_db *sql.DB, user_id int) FullUserStats {
 	}
 
 	return user_stats
+}
+func SetArea(my_db *sql.DB, user_id int, area_id int) {
+	stmtIns, err := my_db.Prepare("UPDATE buffer_areas SET area_id = ? WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	_, err = stmtIns.Exec(area_id, user_id)
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	log_writer := LogReq{time.Now(), fmt.Sprintf(" User ID is %v, change area to %v", user_id, area_id)}
+	LogWrite(log_writer, log_files.adventure_log)
+
+	err = stmtIns.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+}
+func GetArea(my_db *sql.DB, user_id int) int {
+	stmtOut, err := my_db.Prepare("SELECT area_id FROM buffer_areas WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	var area_id int
+	err = stmtOut.QueryRow(user_id).Scan(&area_id)
+
+	log_writer := LogReq{time.Now(), fmt.Sprintf(" User ID is %v, change area to %v", user_id, area_id)}
+	LogWrite(log_writer, log_files.adventure_log)
+
+	err = stmtOut.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	return area_id
+}
+func GetEnemy(my_db *sql.DB, area_id int, lvl int) FullEnemyStats{
+	enemy_stats := FullEnemyStats{}
+	stmtOut, err := my_db.Prepare("SELECT * FROM enemies WHERE enemy_area = ? AND enemy_lvl = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.QueryRow(area_id, lvl).Scan(&enemy_stats.ID, &enemy_stats.name, &enemy_stats.area_id, &enemy_stats.LVL, &enemy_stats.HP, &enemy_stats.MANA, &enemy_stats.STAMINA, &enemy_stats.str, &enemy_stats.agi, &enemy_stats.int, &enemy_stats.armor, &enemy_stats.stun, &enemy_stats.dodge, &enemy_stats.crit, &enemy_stats.fire, &enemy_stats.water, &enemy_stats.earth, &enemy_stats.wind, &enemy_stats.effect, &enemy_stats.magic_arm, &enemy_stats.meele_miss, &enemy_stats.range_miss)
+	err = stmtOut.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	return enemy_stats
+}
+func AddBattle(my_db *sql.DB, user_id int, enemy_stats FullEnemyStats) {
+	stmtIns, err := my_db.Prepare("INSERT INTO fight_buffer VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	_, err = stmtIns.Exec(user_id, enemy_stats.ID, enemy_stats.name, enemy_stats.area_id, enemy_stats.LVL, enemy_stats.HP, enemy_stats.MANA, enemy_stats.STAMINA, enemy_stats.str, enemy_stats.agi, enemy_stats.int, enemy_stats.armor, enemy_stats.stun, enemy_stats.dodge, enemy_stats.crit, enemy_stats.fire, enemy_stats.water, enemy_stats.earth, enemy_stats.wind, enemy_stats.effect, enemy_stats.magic_arm, enemy_stats.meele_miss, enemy_stats.range_miss)
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	log_writer := LogReq{time.Now(), fmt.Sprintf(" User ID is %v, start battle with %v", user_id, enemy_stats.name)}
+	LogWrite(log_writer, log_files.adventure_log)
+
+	err = stmtIns.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+}
+func CheckBattle(my_db *sql.DB, user_id int) bool {
+	stmtOut, err := my_db.Prepare("SELECT user_id FROM fight_buffer WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	var fight_user int
+	err = stmtOut.QueryRow(user_id).Scan(&fight_user)
+	if err != nil {
+		err = stmtOut.Close()
+		if err != nil {
+			ErrLogHandler(err.Error())
+			panic(err.Error())
+		}
+		return false
+	}
+
+	err = stmtOut.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	if fight_user != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+func CheckBan(my_db *sql.DB, user_id int) bool {
+	stmtOut, err := my_db.Prepare("SELECT is_ban FROM users_info WHERE user_id = ?")
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	var ban int
+	err = stmtOut.QueryRow(user_id).Scan(&ban)
+	if err != nil {
+		err = stmtOut.Close()
+		if err != nil {
+			ErrLogHandler(err.Error())
+			panic(err.Error())
+		}
+		return false
+	}
+
+	err = stmtOut.Close()
+	if err != nil {
+		ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	if ban != 0 {
+		return true
+	} else {
+		return false
+	}
 }
 
 //------------------------------------------------------ DB SECTION END
@@ -724,111 +716,232 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 	for update := range updates {
 		if update.CallbackQuery != nil {
-			switch update.CallbackQuery.Data {
+			if !CheckBan(database, update.CallbackQuery.From.ID) {
+				switch update.CallbackQuery.Data {
 				case "new_reg":
-					msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
-					user_info := UserInfo{update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, update.CallbackQuery.From.LastName, update.CallbackQuery.From.FirstName, update.CallbackQuery.From.LanguageCode}
-					fmt.Print(user_info.user_id)
-					msg.Text = "Ok. I will ask you few questions. This information only for my report, but tell my only the truth\n" +
-						"Firstly, I want to know why are you there."
-					if !RegCheck(database, user_info) {
-						log_writer := LogReq{time.Now(), fmt.Sprintf(" User %v, ID is %v, was registered", user_info.user_nickname, user_info.user_id)}
-						LogWrite(log_writer, log_files.reg_log)
-						RegUser(database, user_info)
-						msg.ReplyMarkup = first_quest_keyboard
-						my_bot.Send(msg)
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
+						user_info := UserInfo{update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, update.CallbackQuery.From.LastName, update.CallbackQuery.From.FirstName, update.CallbackQuery.From.LanguageCode}
+						fmt.Print(user_info.user_id)
+						msg.Text = "Ok. I will ask you few questions. This information only for my report, but tell my only the truth\n" +
+							"Firstly, I want to know why are you there."
+						if !RegCheck(database, user_info) {
+							log_writer := LogReq{time.Now(), fmt.Sprintf(" User %v, ID is %v, was registered", user_info.user_nickname, user_info.user_id)}
+							LogWrite(log_writer, log_files.reg_log)
+							RegUser(database, user_info)
+							msg.ReplyMarkup = first_quest_keyboard
+							my_bot.Send(msg)
+						} else {
+							log_writer := LogReq{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to register, but there is user with same id already!", user_info.user_nickname, user_info.user_id)}
+							LogWrite(log_writer, log_files.reg_log)
+							msg.Text = "Hej, I am already have you on my list!"
+							my_bot.Send(msg)
+						}
 					} else {
-						log_writer := LogReq{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to register, but there is user with same id already!", user_info.user_nickname, user_info.user_id)}
-						LogWrite(log_writer, log_files.reg_log)
-						msg.Text = "Hej, I am already have you on my list!"
-						my_bot.Send(msg)
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
 					}
 				case "first_quest_str":
-					user_stats := UserStatsReg{3, 0, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{3, 0, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "first_quest_agi":
-					user_stats := UserStatsReg{0, 3, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 3, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "first_quest_int":
-					user_stats := UserStatsReg{0, 0, 3}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 0, 3}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "first_quest_silent":
-					user_stats := UserStatsReg{1, 1, 1}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{1, 1, 1}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest1", second_quest_keyboard, "What is your race?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "second_quest_hum":
-					user_stats := UserStatsReg{1, 2, 0}
-					AddRace(database, update.CallbackQuery.From.ID, "Human")
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{1, 2, 0}
+						AddRace(database, update.CallbackQuery.From.ID, "Human")
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "second_quest_elf":
-					user_stats := UserStatsReg{0, 2, 1}
-					AddRace(database, update.CallbackQuery.From.ID, "Elf")
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 2, 1}
+						AddRace(database, update.CallbackQuery.From.ID, "Elf")
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "second_quest_dwarf":
-					user_stats := UserStatsReg{2, 0, 1}
-					AddRace(database, update.CallbackQuery.From.ID, "Dwarf")
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{2, 0, 1}
+						AddRace(database, update.CallbackQuery.From.ID, "Dwarf")
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "second_quest_orc":
-					user_stats := UserStatsReg{2, 1, 0}
-					AddRace(database, update.CallbackQuery.From.ID, "Orc")
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{2, 1, 0}
+						AddRace(database, update.CallbackQuery.From.ID, "Orc")
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "second_quest_silent":
-					user_stats := UserStatsReg{1, 1, 1}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{1, 1, 1}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest2", third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "third_quest_str":
-					user_stats := UserStatsReg{3, 0, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{3, 0, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "third_quest_agi":
-					user_stats := UserStatsReg{0, 3, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 3, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "third_quest_int":
-					user_stats := UserStatsReg{0, 0, 3}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 0, 3}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "third_quest_silent":
-					user_stats := UserStatsReg{1, 1, 1}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{1, 1, 1}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest3", forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "forth_quest_str":
-					user_stats := UserStatsReg{3, 0, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{3, 0, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "forth_quest_agi":
-					user_stats := UserStatsReg{0, 3, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 3, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "forth_quest_int":
-					user_stats := UserStatsReg{0, 0, 3}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 0, 3}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "forth_quest_silent":
-					user_stats := UserStatsReg{1, 1, 1}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{1, 1, 1}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest4", fifth_quest_keyboard, "What are you looking here?"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "fifth_quest_str":
-					user_stats := UserStatsReg{3, 0, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{3, 0, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "fifth_quest_agi":
-					user_stats := UserStatsReg{0, 3, 0}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 3, 0}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "fifth_quest_int":
-					user_stats := UserStatsReg{0, 0, 3}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{0, 0, 3}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "fifth_quest_silent":
-					user_stats := UserStatsReg{1, 1, 1}
-					my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := UserStatsReg{1, 1, 1}
+						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, "quest5", menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "check_char_stat":
-					user_stast := TakeFullStats(database, update.CallbackQuery.From.ID)
-					msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
-					message := fmt.Sprintf("Your lvl: %v \nExperiense you have: %v \nExperience need to next lvl: %v \nSkill points you have: %v \nYour energy: %v \nYour race: %v \nYour HP: %v \nYour stamina: %v \nYour MP: %v \n\nAttributes\n\nYour strength: %v \nYour agility: %v \nYour intelligence: %v \nYour armor: %v \nYour magic armor: %v \nYour stun chance: %v%% \nYour crit chance: %v%% \nYour dodge chance: %v%% \nYour magic effect chance: %v%% \nYour meele miss chance: %v%% \nYour range miss chance: %v%% \n\nMagic elements\n\nFire element: %v \nWater element: %v \nEarth element: %v \nWind element: %v \n", user_stast.LVL, user_stast.EX_now, user_stast.EX_next_lvl, user_stast.skill_point, user_stast.energy, user_stast.race, user_stast.HP, user_stast.STAMINA, user_stast.MANA, user_stast.str, user_stast.agi, user_stast.int, user_stast.armor, user_stast.magic_arm, user_stast.stun, user_stast.crit, user_stast.dodge, user_stast.effect, user_stast.meele_miss, user_stast.range_miss, user_stast.fire, user_stast.water, user_stast.earth, user_stast.wind)
-					msg.Text = message
-					msg.ReplyMarkup = menu_keyboard
-					my_bot.Send(msg)
-			case "1":
-					area_act := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
-					area_act.Text = "You in forest"
-					area_act.ReplyMarkup = area_action_keyboard
-					my_bot.Send(area_act)
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stast := TakeFullStats(database, update.CallbackQuery.From.ID)
+						msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
+						message := fmt.Sprintf("Your lvl: %v \nExperiense you have: %v \nExperience need to next lvl: %v \nSkill points you have: %v \nYour energy: %v \nYour race: %v \nYour HP: %v \nYour stamina: %v \nYour MP: %v \n\nAttributes\n\nYour strength: %v \nYour agility: %v \nYour intelligence: %v \nYour armor: %v \nYour magic armor: %v \nYour stun chance: %v%% \nYour crit chance: %v%% \nYour dodge chance: %v%% \nYour magic effect chance: %v%% \nYour meele miss chance: %v%% \nYour range miss chance: %v%% \n\nMagic elements\n\nFire element: %v \nWater element: %v \nEarth element: %v \nWind element: %v \n", user_stast.LVL, user_stast.EX_now, user_stast.EX_next_lvl, user_stast.skill_point, user_stast.energy, user_stast.race, user_stast.HP, user_stast.STAMINA, user_stast.MANA, user_stast.str, user_stast.agi, user_stast.int, user_stast.armor, user_stast.magic_arm, user_stast.stun, user_stast.crit, user_stast.dodge, user_stast.effect, user_stast.meele_miss, user_stast.range_miss, user_stast.fire, user_stast.water, user_stast.earth, user_stast.wind)
+						msg.Text = message
+						msg.ReplyMarkup = menu_keyboard
+						my_bot.Send(msg)
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
+				case "go_adventure":
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
+						msg.Text = "Choose the location"
+						msg.ReplyMarkup = area_keyboard
+						my_bot.Send(msg)
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
+				case "back":
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Back to menu")
+						//msg.Text = "Choose the location"
+						msg.ReplyMarkup = menu_keyboard
+						my_bot.Send(msg)
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
+				case "1":
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						area_act := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
+						area_act.Text = "You in forest"
+						area_act.ReplyMarkup = area_action_keyboard
+						SetArea(database, update.CallbackQuery.From.ID, 1)
+						my_bot.Send(area_act)
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "2":
-					fmt.Print(2)
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						fmt.Print(2)
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "enemy":
-					fight_act := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
-					fight_act.Text = "You was attacked by wolf"
-					fight_act.ReplyMarkup = fight_keyboard
-					my_bot.Send(fight_act)
+					if !CheckBattle(database, update.CallbackQuery.From.ID) {
+						my_bot.Send(EnemySearcher(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
+					} else {
+						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+					}
 				case "attack":
 					my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Wolf was attacked by You. Wold is dead"))
 					area_act := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
@@ -837,8 +950,10 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 					my_bot.Send(area_act)
 				case "defence":
 					my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You was attacked by wolf. You is dead"))
+				}
+			} else {
+				my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are in prison!"))
 			}
-
 			//my_bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID,update.CallbackQuery.Data))
 		}
 
@@ -867,6 +982,8 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 				mes_for_registered := fmt.Sprintf("Hello, %v. What are you doing here? Or you just lost, little chicken?\n", user_info.user_nickname)
 				msg.Text = mes_for_registered
 			}
+		case "menu":
+			msg.ReplyMarkup = menu_keyboard
 		case "registration":
 			msg.Text = "Registration"
 			if !RegCheck(database, user_info) {
@@ -908,11 +1025,29 @@ func RegQuestion(chat_string int64, stats UserStatsReg, my_db *sql.DB, user_id i
 		msg.ReplyMarkup = keys
 		WriteAnswers(my_db, user_id, question)
 		if question == "quest5" {
-			CalcStats(my_db, user_id)
+			CalcStatsAfterReg(my_db, user_id)
 		}
 	} else {
 		msg.Text = "You are already answer!"
 	}
+	return msg
+}
+func EnemySearcher(chat_string int64, my_db *sql.DB, user_id int) tgbotapi.MessageConfig {
+	msg := tgbotapi.NewMessage(chat_string, "")
+	user_stats := TakeFullStats(my_db, user_id)
+	if user_stats.energy > 0 {
+		enemy_higher_edge := user_stats.LVL + 2
+		rand.Seed(time.Now().UnixNano())
+		enemy_lvl := rand.Intn(enemy_higher_edge - user_stats.LVL + 1) + user_stats.LVL
+		area_now := GetArea(my_db, user_id)
+		enemy_stats := GetEnemy(my_db, area_now, enemy_lvl)
+		AddBattle(my_db, user_id,enemy_stats)
+		msg.Text = fmt.Sprintf("You was attacked by %v \n", enemy_stats.name) + fmt.Sprintf("Enemy lvl: %v \nEnemy HP: %v \nEnemy stamina: %v \nEnemy MP: %v \n", enemy_stats.LVL, enemy_stats.HP, enemy_stats.STAMINA, enemy_stats.MANA)
+		msg.ReplyMarkup = fight_keyboard
+	} else {
+		msg.Text = "You are tired and no have energy to fight."
+	}
+
 	return msg
 }
 

@@ -1,2 +1,5 @@
 11-16-2019 13:19:56 User YUART, ID is 375806606, started adventure
 11-16-2019 13:20:04 User YUART, ID is 375806606, started adventure
+11-18-2019 15:22:49 User ID is 375806606, change area to 1
+11-18-2019 15:22:51 User ID is 375806606, change area to 1
+11-18-2019 15:22:52 User ID is 375806606, start battle with wolf
