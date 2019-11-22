@@ -6,3 +6,12 @@
 11-18-2019 13:27:44Error 1136: Column count doesn't match value count at row 1
 11-18-2019 15:20:27sql: Scan error on column index 2, name "intelligence": destination not a pointer
 11-19-2019 14:29:12Error 1146: Table 'elementbattles.user_stats' doesn't exist
+11-22-2019 13:52:11Error 1054: Unknown column 'is_ban' in 'field list'
+11-22-2019 13:55:06Error 1136: Column count doesn't match value count at row 1
+11-22-2019 14:03:31Error 1054: Unknown column 'enemy_area' in 'where clause'
+11-22-2019 14:05:06Error 1136: Column count doesn't match value count at row 1
+11-22-2019 14:09:20Error 1054: Unknown column 'enemy_stun' in 'field list'
+11-22-2019 14:10:20Error 1054: Unknown column 'enemy_meele' in 'field list'
+11-22-2019 14:10:47Error 1054: Unknown column 'user_stun' in 'field list'
+11-22-2019 14:11:32Error 1054: Unknown column 'enemy_stun' in 'field list'
+11-22-2019 14:12:18Error 1054: Unknown column 'user_stun' in 'field list'

@@ -10,13 +10,13 @@ import (
 )
 
 func RegUser(my_db *sql.DB, user_info structs.UserInfo) {
-	stmtIns, err := my_db.Prepare("INSERT INTO users_stats VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmtIns, err := my_db.Prepare("INSERT INTO users_stats VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 
-	_, err = stmtIns.Exec(user_info.User_id, 1, 0, 100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " ", 15, 1)
+	_, err = stmtIns.Exec(user_info.User_id,"","", 15, 1, 0, 100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -195,6 +195,7 @@ func CalcStatsAfterReg(my_db *sql.DB, user_id int) {
 	const ARMOR_COF = 0.5
 	const ST_COF = 2.5
 	const START_ELEM = 2
+	const MISS_COF = 30
 
 	completed_user_stats := GetCoreAttribs(my_db, user_id)
 	hp := HP_MIN + float32(completed_user_stats.Str) * HP_MP_COF
@@ -206,8 +207,8 @@ func CalcStatsAfterReg(my_db *sql.DB, user_id int) {
 	crit_chance := float32(completed_user_stats.Agi) * CHANCE_COF
 	effect_chance := float32(completed_user_stats.Int) * CHANCE_COF
 	magic_armor := float32(completed_user_stats.Int) * ARMOR_COF
-	meele_miss_chance := float32(30)
-	range_miss_chance := float32(30)
+	meele_miss_chance := float32(MISS_COF)
+	range_miss_chance := float32(MISS_COF)
 	fire_elem := 0
 	water_elem := 0
 	earth_elem := 0

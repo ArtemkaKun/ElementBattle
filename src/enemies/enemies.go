@@ -9,7 +9,7 @@ import (
 
 func GetEnemy(my_db *sql.DB, area_id int, lvl int) structs.FullBotEnemyStats{
 	enemy_stats := structs.FullBotEnemyStats{}
-	stmtOut, err := my_db.Prepare("SELECT * FROM enemies WHERE enemy_area = ? AND enemy_lvl = ?")
+	stmtOut, err := my_db.Prepare("SELECT * FROM enemies WHERE area = ? AND lvl = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())

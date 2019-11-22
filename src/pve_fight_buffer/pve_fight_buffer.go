@@ -10,7 +10,7 @@ import (
 )
 
 func AddBattle(my_db *sql.DB, user_id int, enemy_stats structs.FullBotEnemyStats) {
-	stmtIns, err := my_db.Prepare("INSERT INTO pve_fight_buffer VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmtIns, err := my_db.Prepare("INSERT INTO pve_fight_buffer VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -67,7 +67,7 @@ func CheckBattle(my_db *sql.DB, user_id int) bool {
 }
 func GetFightEnemyStats(my_db *sql.DB, user_id int) structs.FullFightBotEnemyStats {
 	enemy_stats := structs.FullFightBotEnemyStats{}
-	stmtOut, err := my_db.Prepare("SELECT enemy_id, enemy_name, enemy_area, enemy_lvl, enemy_hp, enemy_mana, enemy_stamina, enemy_str, enemy_agi, enemy_int, enemy_armor, enemy_stun, enemy_dodge, enemy_crit, enemy_fire, enemy_water, enemy_earth, enemy_wind, enemy_effect, enemy_magic_armor, enemy_meele, enemy_range, enemy_under_effect, enemy_under_stun FROM pve_fight_buffer WHERE user_id = ?")
+	stmtOut, err := my_db.Prepare("SELECT enemy_id, enemy_name, enemy_area, enemy_lvl, enemy_hp, enemy_mana, enemy_stamina, enemy_str, enemy_agi, enemy_int, enemy_armor, enemy_stun_chance, enemy_dodge_chance, enemy_crit_chance, enemy_fire, enemy_water, enemy_earth, enemy_wind, enemy_effect_chance, enemy_magic_armor, enemy_meele_miss_chance, enemy_range_miss_chance, enemy_under_effect, enemy_under_stun FROM pve_fight_buffer WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -91,7 +91,7 @@ func GetFightEnemyStats(my_db *sql.DB, user_id int) structs.FullFightBotEnemySta
 }
 func GetBattleUserStats(my_db *sql.DB, user_id int) structs.FightUserStats {
 	user_stats :=  structs.FightUserStats{}
-	stmtOut, err := my_db.Prepare("SELECT user_stun, user_under_effect, user_blok FROM pve_fight_buffer WHERE user_id = ?")
+	stmtOut, err := my_db.Prepare("SELECT user_under_stun, user_under_effect, user_block FROM pve_fight_buffer WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -107,7 +107,7 @@ func GetBattleUserStats(my_db *sql.DB, user_id int) structs.FightUserStats {
 	return user_stats
 }
 func SetNewBotEnemyFightStats(my_db *sql.DB, user_id int, enemy_stats structs.FullFightBotEnemyStats) {
-	stmtIns, err := my_db.Prepare("UPDATE pve_fight_buffer SET enemy_hp = ?, enemy_mana = ?, enemy_stamina = ?, enemy_str = ?, enemy_agi = ?, enemy_int = ?, enemy_armor = ?, enemy_stun = ?, enemy_dodge = ?, enemy_crit = ?, enemy_fire = ?, enemy_water = ?, enemy_earth = ?, enemy_wind = ?, enemy_effect = ?, enemy_magic_armor = ?, enemy_meele = ?, enemy_range = ?, enemy_under_effect = ?, enemy_under_stun = ? WHERE user_id = ?")
+	stmtIns, err := my_db.Prepare("UPDATE pve_fight_buffer SET enemy_hp = ?, enemy_mana = ?, enemy_stamina = ?, enemy_str = ?, enemy_agi = ?, enemy_int = ?, enemy_armor = ?, enemy_stun_chance = ?, enemy_dodge_chance = ?, enemy_crit_chance = ?, enemy_fire = ?, enemy_water = ?, enemy_earth = ?, enemy_wind = ?, enemy_effect_chance = ?, enemy_magic_armor = ?, enemy_meele_miss_chance = ?, enemy_range_miss_chance = ?, enemy_under_effect = ?, enemy_under_stun = ? WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -132,7 +132,7 @@ func SetNewBotEnemyFightStats(my_db *sql.DB, user_id int, enemy_stats structs.Fu
 	}
 }
 func SetNewUserFightStats(my_db *sql.DB, user_id int, user_fight_stats structs.FightUserStats) {
-	stmtIns, err := my_db.Prepare("UPDATE pve_fight_buffer SET user_stun = ? , user_under_effect = ? WHERE user_id = ?")
+	stmtIns, err := my_db.Prepare("UPDATE pve_fight_buffer SET user_under_stun = ? , user_under_effect = ? WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())

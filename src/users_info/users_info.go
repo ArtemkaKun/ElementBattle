@@ -1,10 +1,13 @@
 package users_info
 
 import (
+	"buffer_areas"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"log_writer"
 	"structs"
+	"users_reg_question"
+	"users_stats"
 )
 
 func RegUser(my_db *sql.DB, user_info structs.UserInfo) {
@@ -25,6 +28,10 @@ func RegUser(my_db *sql.DB, user_info structs.UserInfo) {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
+
+	users_stats.RegUser(my_db, user_info)
+	users_reg_question.RegUser(my_db, user_info)
+	buffer_areas.RegUser(my_db, user_info)
 }
 func RegCheck(my_db *sql.DB, user_info structs.UserInfo) bool {
 	stmtOut, err := my_db.Prepare("SELECT user_id FROM users_info WHERE user_id = ?")
@@ -58,7 +65,7 @@ func RegCheck(my_db *sql.DB, user_info structs.UserInfo) bool {
 
 }
 func CheckBan(my_db *sql.DB, user_id int) bool {
-	stmtOut, err := my_db.Prepare("SELECT is_ban FROM users_info WHERE user_id = ?")
+	stmtOut, err := my_db.Prepare("SELECT is_banned FROM users_info WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())

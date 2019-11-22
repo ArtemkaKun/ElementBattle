@@ -49,8 +49,10 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 				case "new_reg":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
-						user_info := structs.UserInfo{update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName, update.CallbackQuery.From.LastName, update.CallbackQuery.From.FirstName, update.CallbackQuery.From.LanguageCode, 0}
-						fmt.Print(user_info.User_id)
+						user_info := structs.UserInfo {
+							update.CallbackQuery.From.ID, update.CallbackQuery.From.UserName,
+							update.CallbackQuery.From.LastName, update.CallbackQuery.From.FirstName,
+							update.CallbackQuery.From.LanguageCode, 0}
 						msg.Text = "Ok. I will ask you few questions. This information only for my report, but tell my only the truth\n" +
 							"Firstly, I want to know why are you there."
 						if !users_info.RegCheck(database, user_info) {
@@ -58,187 +60,324 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
 							users_info.RegUser(database, user_info)
 							msg.ReplyMarkup = keyboards.Eng_keyboard.First_quest_keyboard
-							my_bot.Send(msg)
+							_, err := my_bot.Send(msg)
+							if err != nil{
+								log_writer.ErrLogHandler(err.Error())
+							}
 						} else {
 							log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to register, but there is user with same id already!", user_info.User_nickname, user_info.User_id)}
 							log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
 							msg.Text = "Hej, I am already have you on my list!"
-							my_bot.Send(msg)
+							_, err := my_bot.Send(msg)
+							if err != nil{
+								log_writer.ErrLogHandler(err.Error())
+							}
 						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "first_quest_str":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{3, 0, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboards.Eng_keyboard.Second_quest_keyboard, "What is your race?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "first_quest_agi":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 3, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboards.Eng_keyboard.Second_quest_keyboard, "What is your race?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "first_quest_int":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 0, 3}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboards.Eng_keyboard.Second_quest_keyboard, "What is your race?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "first_quest_silent":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{1, 1, 1}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboards.Eng_keyboard.Second_quest_keyboard, "What is your race?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "second_quest_hum":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{1, 2, 0}
 						users_stats.AddRace(database, update.CallbackQuery.From.ID, "Human")
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboards.Eng_keyboard.Third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
+
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "second_quest_elf":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 2, 1}
 						users_stats.AddRace(database, update.CallbackQuery.From.ID, "Elf")
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboards.Eng_keyboard.Third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "second_quest_dwarf":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{2, 0, 1}
 						users_stats.AddRace(database, update.CallbackQuery.From.ID, "Dwarf")
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboards.Eng_keyboard.Third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "second_quest_orc":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{2, 1, 0}
 						users_stats.AddRace(database, update.CallbackQuery.From.ID, "Orc")
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboards.Eng_keyboard.Third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "second_quest_silent":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{1, 1, 1}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						users_stats.AddRace(database, update.CallbackQuery.From.ID, "Unknown")
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboards.Eng_keyboard.Third_quest_keyboard, "You have a chocolate cake. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "third_quest_str":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{3, 0, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboards.Eng_keyboard.Forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "third_quest_agi":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 3, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboards.Eng_keyboard.Forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "third_quest_int":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 0, 3}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboards.Eng_keyboard.Forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "third_quest_silent":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{1, 1, 1}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboards.Eng_keyboard.Forth_quest_keyboard, "Your friend has serious injury. What will you do?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "forth_quest_str":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{3, 0, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboards.Eng_keyboard.Fifth_quest_keyboard, "What are you looking here?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "forth_quest_agi":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 3, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboards.Eng_keyboard.Fifth_quest_keyboard, "What are you looking here?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "forth_quest_int":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 0, 3}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboards.Eng_keyboard.Fifth_quest_keyboard, "What are you looking here?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "forth_quest_silent":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{1, 1, 1}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboards.Eng_keyboard.Fifth_quest_keyboard, "What are you looking here?"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "fifth_quest_str":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{3, 0, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboards.Eng_keyboard.Menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "fifth_quest_agi":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 3, 0}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboards.Eng_keyboard.Menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "fifth_quest_int":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{0, 0, 3}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboards.Eng_keyboard.Menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "fifth_quest_silent":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						user_stats := structs.UserCoreStats{1, 1, 1}
-						my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboards.Eng_keyboard.Menu_keyboard, "Ok, that's all for now. Do whatever you want and try not to die"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "check_char_stat":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
@@ -247,9 +386,15 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 						message := fmt.Sprintf("Your Lvl: %v \nExperiense you have: %v \nExperience need to next Lvl: %v \nSkill points you have: %v \nYour energy: %v \nYour race: %v \nYour HP: %v \nYour stamina: %v \nYour MP: %v \n\nAttributes\n\nYour strength: %v \nYour agility: %v \nYour intelligence: %v \nYour armor: %v \nYour magic armor: %v \nYour stun chance: %v%% \nYour crit chance: %v%% \nYour dodge chance: %v%% \nYour magic effect chance: %v%% \nYour meele miss chance: %v%% \nYour range miss chance: %v%% \n\nMagic elements\n\nFire element: %v \nWater element: %v \nEarth element: %v \nWind element: %v \n", user_stast.Lvl, user_stast.Ex_now, user_stast.Ex_next_lvl, user_stast.Skill_point, user_stast.Energy, user_stast.Race, user_stast.Hp, user_stast.Stamina, user_stast.Mp, user_stast.Str, user_stast.Agi, user_stast.Int, user_stast.Armor, user_stast.Magic_armor, user_stast.Stun_chance, user_stast.Crit_chance, user_stast.Dodge_chance, user_stast.Effect_chance, user_stast.Meele_miss_chance, user_stast.Range_miss_chance, user_stast.Fire, user_stast.Water, user_stast.Earth, user_stast.Wind)
 						msg.Text = message
 						msg.ReplyMarkup = keyboards.Eng_keyboard.Menu_keyboard
-						my_bot.Send(msg)
+						_, err := my_bot.Send(msg)
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "go_adventure":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
@@ -258,17 +403,29 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 						log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, started adventure", update.CallbackQuery.From.UserName, update.CallbackQuery.From.ID)}
 						log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
 						msg.ReplyMarkup = keyboards.Eng_keyboard.Area_keyboard
-						my_bot.Send(msg)
+						_, err := my_bot.Send(msg)
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "back":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Back to menu")
 						msg.ReplyMarkup = keyboards.Eng_keyboard.Menu_keyboard
-						my_bot.Send(msg)
+						_, err := my_bot.Send(msg)
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "1":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
@@ -278,44 +435,92 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 						buffer_areas.SetArea(database, update.CallbackQuery.From.ID, 1)
 						log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, go to forest", update.CallbackQuery.From.UserName, update.CallbackQuery.From.ID)}
 						log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
-						my_bot.Send(area_act)
+						_, err := my_bot.Send(area_act)
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "2":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, go to mountains", update.CallbackQuery.From.UserName, update.CallbackQuery.From.ID)}
 						log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "enemy":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
-						my_bot.Send(EnemySearcher(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
+						_, err := my_bot.Send(EnemySearcher(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are fighting now!"))
+						if err != nil{
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "attack":
-					user_stats := users_stats.TakeFullStats(database, update.CallbackQuery.From.ID)
-					if user_stats.Hp >= 10 {
-						my_bot.Send(CalcDamage(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
-						my_bot.Send(CalcBotDamage(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
+					if pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := users_stats.TakeFullStats(database, update.CallbackQuery.From.ID)
+						if user_stats.Hp >= 10 {
+							_, err := my_bot.Send(CalcDamage(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
+							if err != nil {
+								log_writer.ErrLogHandler(err.Error())
+							}
+							_, err = my_bot.Send(CalcBotDamage(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
+							if err != nil {
+								log_writer.ErrLogHandler(err.Error())
+							}
+						} else {
+							_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are injured! Try to rest"))
+							if err != nil {
+								log_writer.ErrLogHandler(err.Error())
+							}
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are injured! Try to rest"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are not fighting now!"))
+						if err != nil {
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				case "defence":
-					user_stats := users_stats.TakeFullStats(database, update.CallbackQuery.From.ID)
-					if user_stats.Stamina >= 5 {
-						pve_fight_buffer.SetBlock(database, update.CallbackQuery.From.ID, 1)
-						log_insert := structs.LogRequest{time.Now(), fmt.Sprintf("ID is %v, set block", update.CallbackQuery.From.ID)}
-						log_writer.LogWrite(log_insert, log_writer.Log_files.Battle_log)
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You set a block"))
+					if pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
+						user_stats := users_stats.TakeFullStats(database, update.CallbackQuery.From.ID)
+						if user_stats.Stamina >= 5 {
+							pve_fight_buffer.SetBlock(database, update.CallbackQuery.From.ID, 1)
+							log_insert := structs.LogRequest{time.Now(), fmt.Sprintf("ID is %v, set block", update.CallbackQuery.From.ID)}
+							log_writer.LogWrite(log_insert, log_writer.Log_files.Battle_log)
+							_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You set a block"))
+							if err != nil {
+								log_writer.ErrLogHandler(err.Error())
+							}
+							_, err = my_bot.Send(CalcBotDamage(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
+							if err != nil {
+								log_writer.ErrLogHandler(err.Error())
+							}
+						} else {
+							_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You have not stamina!"))
+							if err != nil {
+								log_writer.ErrLogHandler(err.Error())
+							}
+						}
 					} else {
-						my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You have not stamina!"))
+						_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are not fighting now!"))
+						if err != nil {
+							log_writer.ErrLogHandler(err.Error())
+						}
 					}
 				}
 			}
-			//my_bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID,update.CallbackQuery.Data))
+			my_bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID,""))
 		}
 
 		if update.Message == nil {
@@ -327,7 +532,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 		}
 
 		chat_id := update.Message.Chat.ID
-		if !users_info.CheckBan(database, update.CallbackQuery.From.ID) {
+		if !users_info.CheckBan(database, update.Message.From.ID) {
 			msg := tgbotapi.NewMessage(chat_id, "")
 			user_info := structs.UserInfo{update.Message.From.ID, update.Message.From.UserName, update.Message.From.LastName, update.Message.From.FirstName, update.Message.From.LanguageCode, 0}
 
@@ -346,39 +551,50 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 				}
 			case "menu":
 				if users_info.RegCheck(database, user_info) {
-					msg.Text = "You are in menu"
-					msg.ReplyMarkup = keyboards.Eng_keyboard.Menu_keyboard
+					if users_reg_question.CheckAllAnswers(database, update.Message.From.ID) {
+						msg.Text = "You are in menu"
+						msg.ReplyMarkup = keyboards.Eng_keyboard.Menu_keyboard
+					} else {
+						msg.Text = "Complete all answers"
+					}
 				} else {
 					msg.Text = "You need to register first!"
 				}
-			case "registration":
-				msg.Text = "Registration"
-				if !users_info.RegCheck(database, user_info) {
-					log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, was registered", user_info.User_nickname, user_info.User_id)}
-					log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
-					users_info.RegUser(database, user_info)
-				} else {
-					log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to register, but there is user with same id already!", user_info.User_nickname, user_info.User_id)}
-					log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
-					msg.Text = "Already registered"
-				}
-			case "start_adventure":
-				msg.Text = "Adventure"
-				user_info := structs.UserInfo{update.Message.From.ID, update.Message.From.UserName, update.Message.From.LastName, update.Message.From.FirstName, update.Message.From.LanguageCode, 0}
-				if !users_info.RegCheck(database, user_info) {
-					log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to start adventure, but he is not registered jet!", user_info.User_nickname, user_info.User_id)}
-					log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
-					msg.Text = "Please, register first"
-				} else {
-					log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, started adventure", user_info.User_nickname, user_info.User_id)}
-					log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
-					msg.ReplyMarkup = keyboards.Eng_keyboard.Area_keyboard
-				}
+			//case "registration":
+			//	msg.Text = "Registration"
+			//	if !users_info.RegCheck(database, user_info) {
+			//		log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, was registered", user_info.User_nickname, user_info.User_id)}
+			//		log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
+			//		users_info.RegUser(database, user_info)
+			//	} else {
+			//		log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to register, but there is user with same id already!", user_info.User_nickname, user_info.User_id)}
+			//		log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
+			//		msg.Text = "Already registered"
+			//	}
+			//case "start_adventure":
+			//	msg.Text = "Adventure"
+			//	user_info := structs.UserInfo{update.Message.From.ID, update.Message.From.UserName, update.Message.From.LastName, update.Message.From.FirstName, update.Message.From.LanguageCode, 0}
+			//	if !users_info.RegCheck(database, user_info) {
+			//		log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to start adventure, but he is not registered jet!", user_info.User_nickname, user_info.User_id)}
+			//		log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
+			//		msg.Text = "Please, register first"
+			//	} else {
+			//		log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, started adventure", user_info.User_nickname, user_info.User_id)}
+			//		log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
+			//		msg.ReplyMarkup = keyboards.Eng_keyboard.Area_keyboard
+			//	}
 			default:
 				msg.Text = "Bad command"
 			}
+			_, err := my_bot.Send(msg)
+			if err != nil {
+				log_writer.ErrLogHandler(err.Error())
+			}
 		} else {
-			my_bot.Send(tgbotapi.NewMessage(chat_id, "You are in prison"))
+			_, err := my_bot.Send(tgbotapi.NewMessage(chat_id, "You are in prison"))
+			if err != nil {
+				log_writer.ErrLogHandler(err.Error())
+			}
 		}
 	}
 }
@@ -600,20 +816,19 @@ func CalcBotDamage(chat_string int64, my_db *sql.DB, user_id int) tgbotapi.Messa
 	} else {
 		bot_attack_mess.Text = fmt.Sprintf("%v is dead!", enemy_stats.Name)
 		pve_fight_buffer.DeleteFight(my_db, user_id)
-		bot_attack_mess.ReplyMarkup = keyboards.Eng_keyboard.Fight_keyboard
+		bot_attack_mess.ReplyMarkup = keyboards.Eng_keyboard.Area_action_keyboard
 		log_insert := structs.LogRequest{time.Now(), fmt.Sprintf("ID is %v, %v dead", user_id, enemy_stats.Name)}
 		log_writer.LogWrite(log_insert, log_writer.Log_files.Battle_log)
 		return bot_attack_mess
 	}
 }
-//------------------------------------------------------ BOT SECTION END
 
 func main() {
 
 	bot := BotStart()
-	db := db.DBStart()
-	defer db.Close()
+	my_db := db.DBStart()
+	defer my_db.Close()
 
-	BotUpdateLoop(bot, db)
+	BotUpdateLoop(bot, my_db)
 
 }

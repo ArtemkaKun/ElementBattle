@@ -36,6 +36,6 @@ func LogWrite(log_request structs.LogRequest, log_type string) {
 	}
 }
 func ErrLogHandler(error string) {
-	log_writer := structs.LogRequest{time.Now(), error}
-	LogWrite(log_writer, log_files.Err_log)
+	log_insert := structs.LogRequest{time.Now(), error}
+	LogWrite(log_insert, Log_files.Err_log)
 }

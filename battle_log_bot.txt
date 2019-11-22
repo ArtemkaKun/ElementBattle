@@ -134,3 +134,9 @@
 11-19-2019 20:03:13ID is 652238386, wolf without stamina
 11-19-2019 20:03:14 ID is 652238386, attack. wolf was defeated!
 11-19-2019 20:03:14ID is 652238386,  dead
+11-22-2019 14:08:22 ID is 375806606, was find enemy wolf
+11-22-2019 14:12:17ID is 375806606, has miss
+11-22-2019 14:12:49ID is 375806606, attack
+11-22-2019 14:12:49ID is 375806606 was attacked by wolf
+11-22-2019 14:13:06ID is 375806606, set block
+11-22-2019 14:13:06ID is 375806606, was defeated by wolf

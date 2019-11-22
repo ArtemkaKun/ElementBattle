@@ -61,3 +61,11 @@
 11-19-2019 20:02:12 User , ID is 652238386, go to forest
 11-19-2019 20:02:14 User ID is 652238386, change area to 1
 11-19-2019 20:02:14 User ID is 652238386, start battle with wolf
+11-22-2019 14:03:05 User YUART, ID is 375806606, started adventure
+11-22-2019 14:03:11 User YUART, ID is 375806606, started adventure
+11-22-2019 14:03:14 User ID is 375806606, change area to 1
+11-22-2019 14:03:14 User YUART, ID is 375806606, go to forest
+11-22-2019 14:03:31 User ID is 375806606, change area to 1
+11-22-2019 14:05:06 User ID is 375806606, change area to 1
+11-22-2019 14:08:22 User ID is 375806606, change area to 1
+11-22-2019 14:08:22 User ID is 375806606, start battle with wolf
