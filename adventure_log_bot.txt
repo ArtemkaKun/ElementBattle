@@ -3,3 +3,61 @@
 11-18-2019 15:22:49 User ID is 375806606, change area to 1
 11-18-2019 15:22:51 User ID is 375806606, change area to 1
 11-18-2019 15:22:52 User ID is 375806606, start battle with wolf
+11-19-2019 14:29:01 User ID is 375806606, change area to 1
+11-19-2019 14:29:03 User ID is 375806606, change area to 1
+11-19-2019 14:29:03 User ID is 375806606, start battle with wolf
+11-19-2019 14:40:00 User ID is 375806606, change area to 1
+11-19-2019 14:40:02 User ID is 375806606, change area to 1
+11-19-2019 14:40:03 User ID is 375806606, start battle with wolf
+11-19-2019 14:41:40 User ID is 375806606, change area to 1
+11-19-2019 14:41:40 User ID is 375806606, start battle with wolf
+11-19-2019 18:53:44 User YUART, ID is 375806606, started adventure
+11-19-2019 18:53:48 User ID is 375806606, change area to 1
+11-19-2019 18:53:48 User YUART, ID is 375806606, go to forest
+11-19-2019 18:53:51 User ID is 375806606, change area to 1
+11-19-2019 18:53:51 User ID is 375806606, start battle with wolf
+11-19-2019 18:54:56 User ID is 375806606, change area to 1
+11-19-2019 18:54:56 User ID is 375806606, start battle with wolf
+11-19-2019 19:14:28 User nick_the_magician, ID is 224808123, started adventure
+11-19-2019 19:14:28 User nick_the_magician, ID is 224808123, go to mountains
+11-19-2019 19:26:12 User younghasla, ID is 356963447, started adventure
+11-19-2019 19:26:14 User ID is 356963447, change area to 1
+11-19-2019 19:26:14 User younghasla, ID is 356963447, go to forest
+11-19-2019 19:26:23 User ID is 356963447, change area to 1
+11-19-2019 19:26:23 User ID is 356963447, start battle with wolf
+11-19-2019 19:31:23 User , ID is 486715858, started adventure
+11-19-2019 19:31:24 User ID is 486715858, change area to 1
+11-19-2019 19:31:24 User , ID is 486715858, go to forest
+11-19-2019 19:31:27 User ID is 486715858, change area to 1
+11-19-2019 19:31:27 User ID is 486715858, start battle with wolf
+11-19-2019 19:34:17 User , ID is 802761266, started adventure
+11-19-2019 19:34:18 User ID is 802761266, change area to 1
+11-19-2019 19:34:18 User , ID is 802761266, go to forest
+11-19-2019 19:39:51 User , ID is 391385865, started adventure
+11-19-2019 19:39:54 User ID is 391385865, change area to 1
+11-19-2019 19:39:54 User , ID is 391385865, go to forest
+11-19-2019 19:42:27 User MAS1A, ID is 374282234, started adventure
+11-19-2019 19:42:29 User ID is 374282234, change area to 1
+11-19-2019 19:42:29 User MAS1A, ID is 374282234, go to forest
+11-19-2019 19:42:35 User ID is 374282234, change area to 1
+11-19-2019 19:42:35 User ID is 374282234, start battle with wolf
+11-19-2019 19:44:41 User prozko1234, ID is 426035408, try to start adventure, but he is not registered jet!
+11-19-2019 19:45:34 User , ID is 652238386, started adventure
+11-19-2019 19:45:37 User , ID is 652238386, go to mountains
+11-19-2019 19:45:49 User , ID is 652238386, go to mountains
+11-19-2019 19:51:45 User , ID is 391385865, started adventure
+11-19-2019 19:51:45 User ID is 391385865, change area to 1
+11-19-2019 19:51:45 User , ID is 391385865, go to forest
+11-19-2019 19:56:52 User awitwicki, ID is 90431123, started adventure
+11-19-2019 19:56:53 User awitwicki, ID is 90431123, go to mountains
+11-19-2019 19:56:58 User ID is 90431123, change area to 1
+11-19-2019 19:56:58 User awitwicki, ID is 90431123, go to forest
+11-19-2019 19:57:04 User ID is 391385865, change area to 1
+11-19-2019 19:57:05 User ID is 391385865, start battle with wolf
+11-19-2019 19:57:08 User ID is 90431123, change area to 1
+11-19-2019 19:57:08 User ID is 90431123, start battle with wolf
+11-19-2019 20:02:04 User , ID is 652238386, started adventure
+11-19-2019 20:02:12 User ID is 652238386, change area to 1
+11-19-2019 20:02:12 User , ID is 652238386, go to forest
+11-19-2019 20:02:14 User ID is 652238386, change area to 1
+11-19-2019 20:02:14 User ID is 652238386, start battle with wolf

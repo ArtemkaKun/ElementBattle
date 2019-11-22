@@ -2,6 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e240eb0-7ddc-43d2-b695-a3c70fb1b2e0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/buffer_areas/buffer_areas.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/enemies/enemies.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/keyboards/keyboards.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/users_info/users_info.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/users_reg_question/users_reg_question.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/users_stats/users_stats.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adventure_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/adventure_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/error_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/error_log_bot.txt" afterDir="false" />
@@ -79,6 +85,13 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Repos\ElementBattle\src\users_info" />
+      <recent name="C:\Repos\ElementBattle\src\structs" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -129,5 +142,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/db" />
+    </ignored-roots>
   </component>
 </project>

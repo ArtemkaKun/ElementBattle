@@ -105,3 +105,233 @@
 11-18-2019 15:22:18 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]
 11-18-2019 15:22:18 User ID is 375806606, answer the question quest5
 11-18-2019 15:22:18 User ID is 375806606, complete the registration
+11-19-2019 14:27:31 User YUART, ID is 375806606, start bot, but this user already registered!
+11-19-2019 18:52:28 User YUART, ID is 375806606, start bot
+11-19-2019 18:52:29 User YUART, ID is 375806606, was registered
+11-19-2019 18:52:36 User ID is 375806606, add atributes. Old attributes: 1, 1, 1. New attributes: 0, 3, 0
+11-19-2019 18:52:36 User YUART, ID is 375806606, answer on quest1 [0, 3, 0]
+11-19-2019 18:52:36 User ID is 375806606, answer the question quest1
+11-19-2019 18:52:39 User ID is 375806606, choose race Human
+11-19-2019 18:52:39 User ID is 375806606, add atributes. Old attributes: 1, 4, 1. New attributes: 1, 2, 0
+11-19-2019 18:52:39 User YUART, ID is 375806606, answer on quest2 [1, 2, 0]
+11-19-2019 18:52:39 User ID is 375806606, answer the question quest2
+11-19-2019 18:52:45 User ID is 375806606, add atributes. Old attributes: 2, 6, 1. New attributes: 0, 3, 0
+11-19-2019 18:52:45 User YUART, ID is 375806606, answer on quest3 [0, 3, 0]
+11-19-2019 18:52:45 User ID is 375806606, answer the question quest3
+11-19-2019 18:52:49 User ID is 375806606, add atributes. Old attributes: 2, 9, 1. New attributes: 0, 3, 0
+11-19-2019 18:52:49 User YUART, ID is 375806606, answer on quest4 [0, 3, 0]
+11-19-2019 18:52:49 User ID is 375806606, answer the question quest4
+11-19-2019 18:52:51 User ID is 375806606, add atributes. Old attributes: 2, 12, 1. New attributes: 0, 3, 0
+11-19-2019 18:52:51 User YUART, ID is 375806606, answer on quest5 [0, 3, 0]
+11-19-2019 18:52:51 User ID is 375806606, answer the question quest5
+11-19-2019 18:52:51 User ID is 375806606, complete the registration
+11-19-2019 19:14:17 User nick_the_magician, ID is 224808123, start bot
+11-19-2019 19:14:22 User nick_the_magician, ID is 224808123, was registered
+11-19-2019 19:14:24 User ID is 224808123, add atributes. Old attributes: 1, 1, 1. New attributes: 0, 0, 3
+11-19-2019 19:14:24 User nick_the_magician, ID is 224808123, answer on quest1 [0, 0, 3]
+11-19-2019 19:14:24 User ID is 224808123, answer the question quest1
+11-19-2019 19:14:25 User ID is 224808123, choose race Dwarf
+11-19-2019 19:14:25 User ID is 224808123, add atributes. Old attributes: 1, 1, 4. New attributes: 2, 0, 1
+11-19-2019 19:14:25 User nick_the_magician, ID is 224808123, answer on quest2 [2, 0, 1]
+11-19-2019 19:14:25 User ID is 224808123, answer the question quest2
+11-19-2019 19:14:26 User ID is 224808123, add atributes. Old attributes: 3, 1, 5. New attributes: 3, 0, 0
+11-19-2019 19:14:26 User nick_the_magician, ID is 224808123, answer on quest3 [3, 0, 0]
+11-19-2019 19:14:26 User ID is 224808123, answer the question quest3
+11-19-2019 19:14:27 User ID is 224808123, add atributes. Old attributes: 6, 1, 5. New attributes: 0, 0, 3
+11-19-2019 19:14:27 User nick_the_magician, ID is 224808123, answer on quest4 [0, 0, 3]
+11-19-2019 19:14:27 User ID is 224808123, answer the question quest4
+11-19-2019 19:14:28 User ID is 224808123, add atributes. Old attributes: 6, 1, 8. New attributes: 0, 0, 3
+11-19-2019 19:14:28 User nick_the_magician, ID is 224808123, answer on quest5 [0, 0, 3]
+11-19-2019 19:14:28 User ID is 224808123, answer the question quest5
+11-19-2019 19:14:28 User ID is 224808123, complete the registration
+11-19-2019 19:14:53 User , ID is 652238386, start bot
+11-19-2019 19:15:01 User , ID is 652238386, was registered
+11-19-2019 19:15:29 User ID is 652238386, add atributes. Old attributes: 1, 1, 1. New attributes: 0, 0, 3
+11-19-2019 19:15:29 User , ID is 652238386, answer on quest1 [0, 0, 3]
+11-19-2019 19:15:29 User ID is 652238386, answer the question quest1
+11-19-2019 19:15:39 User ID is 652238386, choose race Orc
+11-19-2019 19:15:39 User ID is 652238386, add atributes. Old attributes: 1, 1, 4. New attributes: 2, 1, 0
+11-19-2019 19:15:39 User , ID is 652238386, answer on quest2 [2, 1, 0]
+11-19-2019 19:15:39 User ID is 652238386, answer the question quest2
+11-19-2019 19:15:46 User ID is 652238386, add atributes. Old attributes: 3, 2, 4. New attributes: 0, 3, 0
+11-19-2019 19:15:46 User , ID is 652238386, answer on quest3 [0, 3, 0]
+11-19-2019 19:15:46 User ID is 652238386, answer the question quest3
+11-19-2019 19:17:53 User kraftwerk28, ID is 343097987, start bot
+11-19-2019 19:17:55 User kraftwerk28, ID is 343097987, was registered
+11-19-2019 19:17:57 User ID is 343097987, add atributes. Old attributes: 1, 1, 1. New attributes: 3, 0, 0
+11-19-2019 19:17:57 User kraftwerk28, ID is 343097987, answer on quest1 [3, 0, 0]
+11-19-2019 19:17:57 User ID is 343097987, answer the question quest1
+11-19-2019 19:18:00 User ID is 343097987, choose race Elf
+11-19-2019 19:18:00 User ID is 343097987, add atributes. Old attributes: 4, 1, 1. New attributes: 0, 2, 1
+11-19-2019 19:18:00 User kraftwerk28, ID is 343097987, answer on quest2 [0, 2, 1]
+11-19-2019 19:18:00 User ID is 343097987, answer the question quest2
+11-19-2019 19:18:05 User ID is 343097987, add atributes. Old attributes: 4, 3, 2. New attributes: 3, 0, 0
+11-19-2019 19:18:05 User kraftwerk28, ID is 343097987, answer on quest3 [3, 0, 0]
+11-19-2019 19:18:05 User ID is 343097987, answer the question quest3
+11-19-2019 19:25:39 User younghasla, ID is 356963447, start bot
+11-19-2019 19:25:44 User younghasla, ID is 356963447, was registered
+11-19-2019 19:25:49 User ID is 356963447, add atributes. Old attributes: 1, 1, 1. New attributes: 0, 3, 0
+11-19-2019 19:25:49 User younghasla, ID is 356963447, answer on quest1 [0, 3, 0]
+11-19-2019 19:25:49 User ID is 356963447, answer the question quest1
+11-19-2019 19:25:54 User ID is 356963447, choose race Elf
+11-19-2019 19:25:54 User ID is 356963447, add atributes. Old attributes: 1, 4, 1. New attributes: 0, 2, 1
+11-19-2019 19:25:54 User younghasla, ID is 356963447, answer on quest2 [0, 2, 1]
+11-19-2019 19:25:54 User ID is 356963447, answer the question quest2
+11-19-2019 19:25:58 User ID is 356963447, add atributes. Old attributes: 1, 6, 2. New attributes: 0, 3, 0
+11-19-2019 19:25:58 User younghasla, ID is 356963447, answer on quest3 [0, 3, 0]
+11-19-2019 19:25:58 User ID is 356963447, answer the question quest3
+11-19-2019 19:26:04 User ID is 356963447, add atributes. Old attributes: 1, 9, 2. New attributes: 1, 1, 1
+11-19-2019 19:26:04 User younghasla, ID is 356963447, answer on quest4 [1, 1, 1]
+11-19-2019 19:26:04 User ID is 356963447, answer the question quest4
+11-19-2019 19:26:08 User ID is 356963447, add atributes. Old attributes: 2, 10, 3. New attributes: 0, 3, 0
+11-19-2019 19:26:08 User younghasla, ID is 356963447, answer on quest5 [0, 3, 0]
+11-19-2019 19:26:08 User ID is 356963447, answer the question quest5
+11-19-2019 19:26:08 User ID is 356963447, complete the registration
+11-19-2019 19:27:32 User golaiababka, ID is 362991481, start bot
+11-19-2019 19:27:35 User golaiababka, ID is 362991481, was registered
+11-19-2019 19:30:16 User olexandra_sychova, ID is 395195309, start bot
+11-19-2019 19:30:24 User olexandra_sychova, ID is 395195309, was registered
+11-19-2019 19:30:42 User ID is 395195309, add atributes. Old attributes: 1, 1, 1. New attributes: 3, 0, 0
+11-19-2019 19:30:42 User olexandra_sychova, ID is 395195309, answer on quest1 [3, 0, 0]
+11-19-2019 19:30:42 User ID is 395195309, answer the question quest1
+11-19-2019 19:30:47 User ID is 395195309, choose race Elf
+11-19-2019 19:30:47 User ID is 395195309, add atributes. Old attributes: 4, 1, 1. New attributes: 0, 2, 1
+11-19-2019 19:30:47 User olexandra_sychova, ID is 395195309, answer on quest2 [0, 2, 1]
+11-19-2019 19:30:47 User ID is 395195309, answer the question quest2
+11-19-2019 19:30:54 User ID is 395195309, add atributes. Old attributes: 4, 3, 2. New attributes: 0, 0, 3
+11-19-2019 19:30:54 User olexandra_sychova, ID is 395195309, answer on quest3 [0, 0, 3]
+11-19-2019 19:30:54 User ID is 395195309, answer the question quest3
+11-19-2019 19:30:59 User , ID is 486715858, start bot
+11-19-2019 19:31:02 User , ID is 486715858, was registered
+11-19-2019 19:31:06 User ID is 486715858, add atributes. Old attributes: 1, 1, 1. New attributes: 3, 0, 0
+11-19-2019 19:31:06 User , ID is 486715858, answer on quest1 [3, 0, 0]
+11-19-2019 19:31:06 User ID is 486715858, answer the question quest1
+11-19-2019 19:31:13 User ID is 486715858, choose race Human
+11-19-2019 19:31:13 User ID is 486715858, add atributes. Old attributes: 4, 1, 1. New attributes: 1, 2, 0
+11-19-2019 19:31:13 User , ID is 486715858, answer on quest2 [1, 2, 0]
+11-19-2019 19:31:13 User ID is 486715858, answer the question quest2
+11-19-2019 19:31:14 User ID is 486715858, add atributes. Old attributes: 5, 3, 1. New attributes: 3, 0, 0
+11-19-2019 19:31:14 User , ID is 486715858, answer on quest3 [3, 0, 0]
+11-19-2019 19:31:14 User ID is 486715858, answer the question quest3
+11-19-2019 19:31:18 User ID is 486715858, add atributes. Old attributes: 8, 3, 1. New attributes: 0, 3, 0
+11-19-2019 19:31:18 User , ID is 486715858, answer on quest4 [0, 3, 0]
+11-19-2019 19:31:18 User ID is 486715858, answer the question quest4
+11-19-2019 19:31:19 User ID is 486715858, add atributes. Old attributes: 8, 6, 1. New attributes: 3, 0, 0
+11-19-2019 19:31:19 User , ID is 486715858, answer on quest5 [3, 0, 0]
+11-19-2019 19:31:19 User ID is 486715858, answer the question quest5
+11-19-2019 19:31:19 User ID is 486715858, complete the registration
+11-19-2019 19:33:43 User , ID is 802761266, start bot
+11-19-2019 19:33:45 User awitwicki, ID is 90431123, start bot
+11-19-2019 19:33:50 User , ID is 802761266, was registered
+11-19-2019 19:33:53 User awitwicki, ID is 90431123, start bot
+11-19-2019 19:34:03 User ID is 802761266, add atributes. Old attributes: 1, 1, 1. New attributes: 3, 0, 0
+11-19-2019 19:34:03 User , ID is 802761266, answer on quest1 [3, 0, 0]
+11-19-2019 19:34:03 User ID is 802761266, answer the question quest1
+11-19-2019 19:34:05 User ID is 802761266, choose race Human
+11-19-2019 19:34:05 User ID is 802761266, add atributes. Old attributes: 4, 1, 1. New attributes: 1, 2, 0
+11-19-2019 19:34:05 User , ID is 802761266, answer on quest2 [1, 2, 0]
+11-19-2019 19:34:05 User ID is 802761266, answer the question quest2
+11-19-2019 19:34:07 User ID is 802761266, add atributes. Old attributes: 5, 3, 1. New attributes: 3, 0, 0
+11-19-2019 19:34:07 User , ID is 802761266, answer on quest3 [3, 0, 0]
+11-19-2019 19:34:07 User ID is 802761266, answer the question quest3
+11-19-2019 19:34:09 User ID is 802761266, add atributes. Old attributes: 8, 3, 1. New attributes: 3, 0, 0
+11-19-2019 19:34:09 User , ID is 802761266, answer on quest4 [3, 0, 0]
+11-19-2019 19:34:09 User ID is 802761266, answer the question quest4
+11-19-2019 19:34:09 User ID is 802761266, add atributes. Old attributes: 11, 3, 1. New attributes: 0, 0, 3
+11-19-2019 19:34:09 User , ID is 802761266, answer on quest5 [0, 0, 3]
+11-19-2019 19:34:09 User ID is 802761266, answer the question quest5
+11-19-2019 19:34:09 User ID is 802761266, complete the registration
+11-19-2019 19:34:09 User awitwicki, ID is 90431123, was registered
+11-19-2019 19:34:20 User ID is 90431123, add atributes. Old attributes: 1, 1, 1. New attributes: 1, 1, 1
+11-19-2019 19:34:20 User awitwicki, ID is 90431123, answer on quest1 [1, 1, 1]
+11-19-2019 19:34:20 User ID is 90431123, answer the question quest1
+11-19-2019 19:34:22 User ID is 90431123, choose race Human
+11-19-2019 19:34:22 User ID is 90431123, add atributes. Old attributes: 2, 2, 2. New attributes: 1, 2, 0
+11-19-2019 19:34:22 User awitwicki, ID is 90431123, answer on quest2 [1, 2, 0]
+11-19-2019 19:34:22 User ID is 90431123, answer the question quest2
+11-19-2019 19:34:28 User ID is 90431123, add atributes. Old attributes: 3, 4, 2. New attributes: 3, 0, 0
+11-19-2019 19:34:28 User awitwicki, ID is 90431123, answer on quest3 [3, 0, 0]
+11-19-2019 19:34:28 User ID is 90431123, answer the question quest3
+11-19-2019 19:34:39 User awitwicki, ID is 90431123, start bot, but this user already registered!
+11-19-2019 19:34:57 User awitwicki, ID is 90431123, start bot, but this user already registered!
+11-19-2019 19:35:01 User ID is 90431123, add atributes. Old attributes: 6, 4, 2. New attributes: 0, 0, 3
+11-19-2019 19:35:01 User awitwicki, ID is 90431123, answer on quest4 [0, 0, 3]
+11-19-2019 19:35:01 User ID is 90431123, answer the question quest4
+11-19-2019 19:38:47 User , ID is 391385865, start bot
+11-19-2019 19:38:54 User , ID is 391385865, was registered
+11-19-2019 19:39:02 User , ID is 391385865, try to register, but there is user with same id already!
+11-19-2019 19:39:10 User ID is 391385865, add atributes. Old attributes: 1, 1, 1. New attributes: 0, 0, 3
+11-19-2019 19:39:10 User , ID is 391385865, answer on quest1 [0, 0, 3]
+11-19-2019 19:39:10 User ID is 391385865, answer the question quest1
+11-19-2019 19:39:17 User ID is 391385865, choose race Orc
+11-19-2019 19:39:17 User ID is 391385865, add atributes. Old attributes: 1, 1, 4. New attributes: 2, 1, 0
+11-19-2019 19:39:17 User , ID is 391385865, answer on quest2 [2, 1, 0]
+11-19-2019 19:39:17 User ID is 391385865, answer the question quest2
+11-19-2019 19:39:24 User ID is 391385865, add atributes. Old attributes: 3, 2, 4. New attributes: 0, 0, 3
+11-19-2019 19:39:24 User , ID is 391385865, answer on quest3 [0, 0, 3]
+11-19-2019 19:39:24 User ID is 391385865, answer the question quest3
+11-19-2019 19:39:34 User ID is 391385865, add atributes. Old attributes: 3, 2, 7. New attributes: 0, 0, 3
+11-19-2019 19:39:34 User , ID is 391385865, answer on quest4 [0, 0, 3]
+11-19-2019 19:39:34 User ID is 391385865, answer the question quest4
+11-19-2019 19:39:44 User ID is 391385865, add atributes. Old attributes: 3, 2, 10. New attributes: 0, 0, 3
+11-19-2019 19:39:44 User , ID is 391385865, answer on quest5 [0, 0, 3]
+11-19-2019 19:39:44 User ID is 391385865, answer the question quest5
+11-19-2019 19:39:44 User ID is 391385865, complete the registration
+11-19-2019 19:40:00 User MAS1A, ID is 374282234, start bot
+11-19-2019 19:40:08 User MAS1A, ID is 374282234, was registered
+11-19-2019 19:40:18 User ID is 374282234, add atributes. Old attributes: 1, 1, 1. New attributes: 0, 3, 0
+11-19-2019 19:40:18 User MAS1A, ID is 374282234, answer on quest1 [0, 3, 0]
+11-19-2019 19:40:19 User ID is 374282234, answer the question quest1
+11-19-2019 19:40:26 User ID is 374282234, choose race Elf
+11-19-2019 19:40:26 User ID is 374282234, add atributes. Old attributes: 1, 4, 1. New attributes: 0, 2, 1
+11-19-2019 19:40:26 User MAS1A, ID is 374282234, answer on quest2 [0, 2, 1]
+11-19-2019 19:40:26 User ID is 374282234, answer the question quest2
+11-19-2019 19:40:37 User ID is 374282234, add atributes. Old attributes: 1, 6, 2. New attributes: 0, 3, 0
+11-19-2019 19:40:37 User MAS1A, ID is 374282234, answer on quest3 [0, 3, 0]
+11-19-2019 19:40:37 User ID is 374282234, answer the question quest3
+11-19-2019 19:41:00 User ID is 374282234, add atributes. Old attributes: 1, 9, 2. New attributes: 0, 0, 3
+11-19-2019 19:41:00 User MAS1A, ID is 374282234, answer on quest4 [0, 0, 3]
+11-19-2019 19:41:00 User ID is 374282234, answer the question quest4
+11-19-2019 19:41:06 User ID is 374282234, add atributes. Old attributes: 1, 9, 5. New attributes: 0, 0, 3
+11-19-2019 19:41:06 User MAS1A, ID is 374282234, answer on quest5 [0, 0, 3]
+11-19-2019 19:41:06 User ID is 374282234, answer the question quest5
+11-19-2019 19:41:06 User ID is 374282234, complete the registration
+11-19-2019 19:44:43 User prozko1234, ID is 426035408, start bot
+11-19-2019 19:45:24 User ID is 652238386, add atributes. Old attributes: 3, 5, 4. New attributes: 0, 0, 3
+11-19-2019 19:45:24 User , ID is 652238386, answer on quest4 [0, 0, 3]
+11-19-2019 19:45:24 User ID is 652238386, answer the question quest4
+11-19-2019 19:45:29 User ID is 652238386, add atributes. Old attributes: 3, 5, 7. New attributes: 0, 0, 3
+11-19-2019 19:45:29 User , ID is 652238386, answer on quest5 [0, 0, 3]
+11-19-2019 19:45:29 User ID is 652238386, answer the question quest5
+11-19-2019 19:45:29 User ID is 652238386, complete the registration
+11-19-2019 19:45:42 User prozko1234, ID is 426035408, was registered
+11-19-2019 19:47:13 User ID is 426035408, add atributes. Old attributes: 1, 1, 1. New attributes: 0, 3, 0
+11-19-2019 19:47:13 User prozko1234, ID is 426035408, answer on quest1 [0, 3, 0]
+11-19-2019 19:47:13 User ID is 426035408, answer the question quest1
+11-19-2019 19:47:23 User ID is 426035408, choose race Elf
+11-19-2019 19:47:23 User ID is 426035408, add atributes. Old attributes: 1, 4, 1. New attributes: 0, 2, 1
+11-19-2019 19:47:23 User prozko1234, ID is 426035408, answer on quest2 [0, 2, 1]
+11-19-2019 19:47:23 User ID is 426035408, answer the question quest2
+11-19-2019 19:47:36 User ID is 426035408, add atributes. Old attributes: 1, 6, 2. New attributes: 0, 3, 0
+11-19-2019 19:47:36 User prozko1234, ID is 426035408, answer on quest3 [0, 3, 0]
+11-19-2019 19:47:36 User ID is 426035408, answer the question quest3
+11-19-2019 19:56:49 User ID is 90431123, add atributes. Old attributes: 6, 4, 5. New attributes: 0, 3, 0
+11-19-2019 19:56:49 User awitwicki, ID is 90431123, answer on quest5 [0, 3, 0]
+11-19-2019 19:56:49 User ID is 90431123, answer the question quest5
+11-19-2019 19:56:49 User ID is 90431123, complete the registration
+11-19-2019 20:01:34 User , ID is 652238386, start bot, but this user already registered!
+11-19-2019 20:01:42 User , ID is 652238386, start bot, but this user already registered!
+11-20-2019 20:08:24 User bolttaksowka, ID is 396682715, start bot
+11-20-2019 20:08:24 User bolttaksowka, ID is 396682715, start bot
+11-20-2019 20:08:24 User villayuun, ID is 315931676, start bot
+11-20-2019 20:08:25 User , ID is 452858694, start bot
+11-20-2019 20:08:25 User ISmokinTeaInYoHood, ID is 355007828, start bot
+11-20-2019 20:08:25 User ISmokinTeaInYoHood, ID is 355007828, start bot
+11-20-2019 20:08:25 User ISmokinTeaInYoHood, ID is 355007828, start bot
+11-20-2019 20:08:25 User , ID is 419211999, start bot
+11-20-2019 20:08:25 User , ID is 419211999, start bot
+11-20-2019 20:08:25 User , ID is 419211999, start bot
+11-20-2019 20:08:25 User , ID is 419211999, start bot
+11-20-2019 20:08:25 User , ID is 419211999, start bot
+11-20-2019 20:08:26 User , ID is 419211999, start bot
+11-20-2019 20:08:26 User McLemour, ID is 362028065, start bot
