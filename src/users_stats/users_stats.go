@@ -350,16 +350,9 @@ func SetRangeMiss(my_db *sql.DB, user_id int, new_chance float32) {
 }
 func RecalcStats(my_db *sql.DB, user_id int) {
 	const CHANCE_COF = 0.05
-	const HP_MIN = 20
-	const MP_ST_MIN = 10
-	const HP_MP_COF = 8
 	const ARMOR_COF = 0.5
-	const ST_COF = 2.5
 
 	completed_user_stats := GetCoreAttribs(my_db, user_id)
-	hp := HP_MIN + float32(completed_user_stats.Str) * HP_MP_COF
-	stamina := MP_ST_MIN + float32(completed_user_stats.Str) * ST_COF + float32(completed_user_stats.Agi) * ST_COF
-	mana := MP_ST_MIN + float32(completed_user_stats.Int) * HP_MP_COF
 	armor := float32(completed_user_stats.Str) * ARMOR_COF
 	stun_chance := float32(completed_user_stats.Str) * CHANCE_COF
 	dodge_chance := float32(completed_user_stats.Agi) * CHANCE_COF
@@ -368,7 +361,7 @@ func RecalcStats(my_db *sql.DB, user_id int) {
 	magic_armor := float32(completed_user_stats.Int) * ARMOR_COF
 
 
-	stmtIns, err := my_db.Prepare("UPDATE users_stats SET HP = ?, MANA = ?, STAMINA = ?, armor = ?, stun_chance = ?, dodge_chance = ?, crit_chance = ?, effect_chance = ?, magic_armor = ? WHERE user_id = ?")
+	stmtIns, err := my_db.Prepare("UPDATE users_stats SET armor = ?, stun_chance = ?, dodge_chance = ?, crit_chance = ?, effect_chance = ?, magic_armor = ? WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -376,12 +369,12 @@ func RecalcStats(my_db *sql.DB, user_id int) {
 
 	user_stats := structs.FullUserStats{
 		user_id, "", GetRace(my_db, user_id), 15, 1,
-		0, 100, 1, hp,mana, stamina,completed_user_stats.Str,
+		0, 100, 1, 0,0, 0,completed_user_stats.Str,
 		completed_user_stats.Agi, completed_user_stats.Int, armor, magic_armor, stun_chance,
 		dodge_chance, crit_chance, effect_chance, 0,
 		0, 0, 0, 0, 0}
 	_, err = stmtIns.Exec(
-		user_stats.Hp, user_stats.Mp, user_stats.Stamina, user_stats.Armor, user_stats.Stun_chance,
+		user_stats.Armor, user_stats.Stun_chance,
 		user_stats.Dodge_chance, user_stats.Crit_chance, user_stats.Effect_chance, user_stats.Magic_armor,
 		user_id)
 	if err != nil {
@@ -390,6 +383,46 @@ func RecalcStats(my_db *sql.DB, user_id int) {
 	}
 
 	log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User ID is %v, recalc stats", user_id)}
+	log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
+
+	err = stmtIns.Close()
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+}
+func RecalcRest(my_db *sql.DB, user_id int) {
+	const HP_MIN = 20
+	const MP_ST_MIN = 10
+	const HP_MP_COF = 8
+	const ST_COF = 2.5
+
+	completed_user_stats := GetCoreAttribs(my_db, user_id)
+	hp := HP_MIN + float32(completed_user_stats.Str) * HP_MP_COF
+	stamina := MP_ST_MIN + float32(completed_user_stats.Str) * ST_COF + float32(completed_user_stats.Agi) * ST_COF
+	mana := MP_ST_MIN + float32(completed_user_stats.Int) * HP_MP_COF
+
+
+	stmtIns, err := my_db.Prepare("UPDATE users_stats SET HP = ?, MANA = ?, STAMINA = ? WHERE user_id = ?")
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	user_stats := structs.FullUserStats{
+		user_id, "", GetRace(my_db, user_id), 15, 1,
+		0, 100, 1, hp,mana, stamina,completed_user_stats.Str,
+		completed_user_stats.Agi, completed_user_stats.Int, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0, 0}
+	_, err = stmtIns.Exec(
+		user_stats.Hp, user_stats.Mp, user_stats.Stamina, user_id)
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User ID is %v, recalc rest stats", user_id)}
 	log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
 
 	err = stmtIns.Close()
