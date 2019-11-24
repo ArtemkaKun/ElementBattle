@@ -13,6 +13,7 @@ type LogTypes struct {
 	Skill_log     string
 	Invertory_log string
 	Adventure_log string
+	Train_log 	  string
 }
 
 type UserInfo struct {

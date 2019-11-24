@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e240eb0-7ddc-43d2-b695-a3c70fb1b2e0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/meditates/mediates.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/trains/trains.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adventure_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/adventure_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/battle_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/battle_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/error_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/error_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reg_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/reg_log_bot.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/enemies/enemies.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/enemies/enemies.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" afterDir="false" />
@@ -22,9 +21,7 @@
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/log_writer/log_writer.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/log_writer/log_writer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pve_fight_buffer/pve_fight_buffer.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/pve_fight_buffer/pve_fight_buffer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/users_info/users_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/users_info/users_info.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/users_reg_question/users_reg_question.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/users_reg_question/users_reg_question.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/structs/structs.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/structs/structs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/users_stats/users_stats.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/users_stats/users_stats.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -91,6 +88,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Repos\ElementBattle\src\trains" />
       <recent name="C:\Repos\ElementBattle\src\users_info" />
       <recent name="C:\Repos\ElementBattle\src\structs" />
     </key>
@@ -149,16 +147,5 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/db" />
     </ignored-roots>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/main.go</url>
-          <line>34</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

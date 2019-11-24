@@ -13,7 +13,8 @@ var Log_files = structs.LogTypes {
 	"battle_log_bot.txt",
 	"skill_log_bot.txt",
 	"invertory_log_bot.txt",
-	"adventure_log_bot.txt"}
+	"adventure_log_bot.txt",
+	"train_log_bot.txt"}
 
 func LogWrite(log_request structs.LogRequest, log_type string) {
 	f, err := os.OpenFile(log_type, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)

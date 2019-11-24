@@ -140,3 +140,62 @@
 11-22-2019 14:12:49ID is 375806606 was attacked by wolf
 11-22-2019 14:13:06ID is 375806606, set block
 11-22-2019 14:13:06ID is 375806606, was defeated by wolf
+11-23-2019 15:31:09 ID is 375806606, was find enemy wolf
+11-23-2019 15:31:18ID is 375806606, attack
+11-23-2019 15:31:18ID is 375806606 was attacked by wolf
+11-23-2019 15:31:59ID is 375806606, attack
+11-23-2019 15:31:59ID is 375806606 was attacked by wolf
+11-23-2019 15:32:30ID is 375806606, has miss
+11-23-2019 15:32:30ID is 375806606 was attacked by wolf
+11-23-2019 15:32:34ID is 375806606, has miss
+11-23-2019 15:32:34ID is 375806606 was attacked by wolf
+11-23-2019 15:32:36ID is 375806606, attack
+11-23-2019 15:32:36ID is 375806606 was attacked by wolf
+11-23-2019 15:32:46ID is 375806606, has miss
+11-23-2019 15:32:46ID is 375806606, wolf without stamina
+11-23-2019 15:32:49ID is 375806606, has miss
+11-23-2019 15:32:49ID is 375806606, wolf without stamina
+11-23-2019 15:32:51ID is 375806606, has miss
+11-23-2019 15:32:51ID is 375806606, wolf without stamina
+11-23-2019 15:32:53ID is 375806606, has miss
+11-23-2019 15:32:53ID is 375806606, wolf without stamina
+11-23-2019 15:32:55ID is 375806606, has miss
+11-23-2019 15:32:55ID is 375806606, wolf without stamina
+11-23-2019 15:32:56ID is 375806606, attack
+11-23-2019 15:32:56ID is 375806606, wolf without stamina
+11-23-2019 15:33:02ID is 375806606, attack
+11-23-2019 15:33:02ID is 375806606, wolf without stamina
+11-23-2019 15:33:04ID is 375806606, has miss
+11-23-2019 15:33:04ID is 375806606, wolf without stamina
+11-23-2019 15:33:05ID is 375806606, has miss
+11-23-2019 15:33:05ID is 375806606, wolf without stamina
+11-23-2019 15:33:06ID is 375806606, has miss
+11-23-2019 15:33:06ID is 375806606, wolf without stamina
+11-23-2019 15:33:07ID is 375806606, attack
+11-23-2019 15:33:07ID is 375806606, wolf without stamina
+11-23-2019 15:33:15ID is 375806606, attack
+11-23-2019 15:33:15ID is 375806606, wolf without stamina
+11-23-2019 15:33:16ID is 375806606, has miss
+11-23-2019 15:33:16ID is 375806606, wolf without stamina
+11-23-2019 15:33:18ID is 375806606, has miss
+11-23-2019 15:33:18ID is 375806606, wolf without stamina
+11-23-2019 15:33:18ID is 375806606, attack
+11-23-2019 15:33:19ID is 375806606, wolf without stamina
+11-23-2019 15:33:21ID is 375806606, has miss
+11-23-2019 15:33:21ID is 375806606, wolf without stamina
+11-23-2019 15:33:22ID is 375806606, attack
+11-23-2019 15:33:22ID is 375806606, wolf without stamina
+11-23-2019 15:33:23ID is 375806606, attack
+11-23-2019 15:33:23ID is 375806606, wolf without stamina
+11-23-2019 15:33:24ID is 375806606, no stamina
+11-23-2019 15:33:24ID is 375806606, wolf without stamina
+11-23-2019 15:33:26ID is 375806606, no stamina
+11-23-2019 15:33:26ID is 375806606, wolf without stamina
+11-23-2019 15:33:27ID is 375806606, no stamina
+11-23-2019 15:33:27ID is 375806606, wolf without stamina
+11-23-2019 15:33:29ID is 375806606, no stamina
+11-23-2019 15:33:29ID is 375806606, wolf without stamina
+11-23-2019 15:33:30ID is 375806606, no stamina
+11-23-2019 15:33:30ID is 375806606, wolf without stamina
+11-23-2019 15:33:32ID is 375806606, no stamina
+11-23-2019 15:33:32ID is 375806606, wolf without stamina
