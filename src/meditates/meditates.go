@@ -1,4 +1,4 @@
-package mediates
+package meditates
 
 import (
 	"database/sql"
@@ -7,17 +7,14 @@ import (
 	"time"
 )
 
-
-func StartTrain(my_db *sql.DB, user_id int, chat_id int64, time_need time.Time) {
-	stmtIns, err := my_db.Prepare("INSERT INTO users_trains VALUES (?, ?, ?, ?)")
+func StartMeditate(my_db *sql.DB, user_id int, time_need time.Time) {
+	stmtIns, err := my_db.Prepare("INSERT INTO users_meditate VALUES (?, ?, ?)")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 
-	//data_form := time_need.Format("01-02-2006 15:04:05")
-
-	_, err = stmtIns.Exec(user_id, chat_id, time_need, nil)
+	_, err = stmtIns.Exec(user_id, time_need, nil)
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -30,9 +27,9 @@ func StartTrain(my_db *sql.DB, user_id int, chat_id int64, time_need time.Time) 
 	}
 
 }
-func CheckTrain(my_db *sql.DB, time_now time.Time) int64 {
+func CheckMeditate(my_db *sql.DB, time_now time.Time) int64 {
 	UpdateTime(my_db, time_now)
-	stmtOut, err := my_db.Prepare("SELECT chat_id FROM users_trains WHERE training_time <= now_time")
+	stmtOut, err := my_db.Prepare("SELECT user_id FROM users_meditate WHERE meditate_time <= now_time")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -58,13 +55,12 @@ func CheckTrain(my_db *sql.DB, time_now time.Time) int64 {
 	return id
 }
 func UpdateTime(my_db *sql.DB, time_now time.Time) {
-	stmtIns, err := my_db.Prepare("UPDATE users_trains SET now_time = ?")
+	stmtIns, err := my_db.Prepare("UPDATE users_meditate SET now_time = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
 	}
 
-	//data_form := time_need.Format("01-02-2006 15:04:05")
 
 	_, err = stmtIns.Exec(time_now)
 	if err != nil {
@@ -78,34 +74,8 @@ func UpdateTime(my_db *sql.DB, time_now time.Time) {
 		panic(err.Error())
 	}
 }
-func GetUserId(my_db *sql.DB, chat_id int64) int {
-	stmtOut, err := my_db.Prepare("SELECT user_id FROM users_trains WHERE chat_id = ?")
-	if err != nil {
-		log_writer.ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	var id int
-	err = stmtOut.QueryRow(chat_id).Scan(&id)
-	if err != nil {
-		err = stmtOut.Close()
-		if err != nil {
-			log_writer.ErrLogHandler(err.Error())
-			panic(err.Error())
-		}
-		return 0
-	}
-
-	err = stmtOut.Close()
-	if err != nil {
-		log_writer.ErrLogHandler(err.Error())
-		panic(err.Error())
-	}
-
-	return id
-}
-func DeleteTrain(my_db *sql.DB, user_id int) {
-	stmtIns, err := my_db.Prepare("DELETE FROM users_trains WHERE user_id = ?")
+func DeleteMeditate(my_db *sql.DB, user_id int) {
+	stmtIns, err := my_db.Prepare("DELETE FROM users_meditate WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
@@ -123,8 +93,8 @@ func DeleteTrain(my_db *sql.DB, user_id int) {
 		panic(err.Error())
 	}
 }
-func IsTraining(my_db *sql.DB, user_id int) bool {
-	stmtOut, err := my_db.Prepare("SELECT user_id FROM users_trains WHERE user_id = ?")
+func IsMeditate(my_db *sql.DB, user_id int) bool {
+	stmtOut, err := my_db.Prepare("SELECT user_id FROM users_meditate WHERE user_id = ?")
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())

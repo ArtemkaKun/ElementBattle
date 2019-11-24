@@ -1,0 +1,4 @@
+11-24-2019 18:02:37 User ID is 375806606, start training.
+11-24-2019 18:02:37 User ID is 1, finis training. New attributes: 1, 0, %!v(MISSING)
+11-24-2019 18:05:04 User ID is 1, finis training. New attributes: 1, 0, %!v(MISSING)
+11-24-2019 18:13:25 User ID is 375806606, start training.

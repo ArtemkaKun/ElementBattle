@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e240eb0-7ddc-43d2-b695-a3c70fb1b2e0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/meditates/mediates.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/trains/trains.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adventure_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/adventure_log_bot.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/battle_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/battle_log_bot.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/error_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/error_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reg_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/reg_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" afterDir="false" />
@@ -20,7 +17,7 @@
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/log_writer/log_writer.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/log_writer/log_writer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/meditates/mediates.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/meditates/meditates.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/structs/structs.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/structs/structs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/users_stats/users_stats.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/users_stats/users_stats.go" afterDir="false" />
     </list>

@@ -12,6 +12,7 @@ import (
 	"log"
 	"log_writer"
 	"math/rand"
+	"meditates"
 	"pve_fight_buffer"
 	"structs"
 	"time"
@@ -578,9 +579,8 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 				case "train":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						if !trains.IsTraining(database,update.CallbackQuery.From.ID) {
-							need_time := time.Now()
-							need_time.Add(time.Hour * 2)
-							trains.StartTrain(database, update.CallbackQuery.From.ID, update.CallbackQuery.Message.Chat.ID, time.Now())
+							need_time := time.Now().Add(time.Hour * time.Duration(2))
+							trains.StartTrain(database, update.CallbackQuery.From.ID, update.CallbackQuery.Message.Chat.ID, need_time)
 							log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User ID is %v, start training.", update.CallbackQuery.From.ID)}
 							log_writer.LogWrite(log_insert, log_writer.Log_files.Train_log)
 						} else {
@@ -598,10 +598,9 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 				case "meditate":
 					if !pve_fight_buffer.CheckBattle(database, update.CallbackQuery.From.ID) {
 						if !trains.IsTraining(database,update.CallbackQuery.From.ID) {
-							need_time := time.Now()
-							need_time.Add(time.Hour * 2)
-							trains.StartTrain(database, update.CallbackQuery.From.ID, update.CallbackQuery.Message.Chat.ID, time.Now())
-							log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User ID is %v, start training.", update.CallbackQuery.From.ID)}
+							need_time := time.Now().Add(time.Hour * time.Duration(2))
+							meditates.StartMeditate(database, update.CallbackQuery.From.ID, need_time)
+							log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User ID is %v, start meditate.", update.CallbackQuery.From.ID)}
 							log_writer.LogWrite(log_insert, log_writer.Log_files.Train_log)
 						} else {
 							_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "You are training now!"))
@@ -990,6 +989,72 @@ func CalcTrain(my_db *sql.DB, user_id int) string {
 
 	return params
 }
+func CheckMeditates(my_db *sql.DB, my_bot *tgbotapi.BotAPI) {
+	for true {
+		user_id := meditates.CheckMeditate(my_db, time.Now())
+		chat_id := user_id
+		user_id_int := int(user_id)
+		if user_id != 0 {
+			my_bot.Send(tgbotapi.NewMessage(chat_id, "Your training finished.\n" + CalcMeditate(my_db, user_id_int)))
+			meditates.DeleteMeditate(my_db, user_id_int)
+		}
+		amt := time.Duration(1000)
+		time.Sleep(time.Millisecond * amt)
+	}
+}
+func CalcMeditate(my_db *sql.DB, user_id int, ) string {
+	user_core_stats := structs.UserCoreStats{0, 0, 0}
+	user_element_stats := users_stats.GetElementsStats(my_db, user_id)
+	params := ""
+
+	rand.Seed(time.Now().UnixNano())
+	is_int_increase := rand.Float32() * 100
+	if is_int_increase <= 30.0 {
+		user_core_stats.Int += 1
+		params += "Your intelligence increased on 1.\n"
+	}
+
+	switch buffer_areas.GetArea(my_db, user_id) {
+	case 1:
+		rand.Seed(time.Now().UnixNano())
+		is_water_increase := rand.Float32() * 100
+		if is_water_increase <= 30.0 {
+			user_element_stats.Water += 1
+			params += "Your water element increased on 1.\n"
+		}
+		rand.Seed(time.Now().UnixNano())
+		is_earth_increase := rand.Float32() * 100
+		if is_earth_increase <= 30.0 {
+			user_element_stats.Earth += 1
+			params += "Your earth element increased on 1.\n"
+		}
+	case 2:
+		rand.Seed(time.Now().UnixNano())
+		is_wind_increase := rand.Float32() * 100
+		if is_wind_increase <= 30.0 {
+			user_element_stats.Wind += 1
+			params += "Your wind element increased on 1.\n"
+		}
+		rand.Seed(time.Now().UnixNano())
+		is_earth_increase := rand.Float32() * 100
+		if is_earth_increase <= 30.0 {
+			user_element_stats.Earth += 1
+			params += "Your earth element increased on 1.\n"
+		}
+	}
+
+	if params != "" {
+		log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User ID is %v, finish meditate. New attributes: %v, %v, %v, %v, %v", user_core_stats.Int, user_element_stats.Fire, user_element_stats.Water, user_element_stats.Earth, user_element_stats.Wind)}
+		log_writer.LogWrite(log_insert, log_writer.Log_files.Train_log)
+		users_stats.AddAttrib(my_db, user_id, user_core_stats)
+		users_stats.SetElements(my_db, user_id, user_element_stats)
+		users_stats.RecalcStats(my_db, user_id)
+	} else {
+		params += "You tried hard, but learn nothing"
+	}
+
+	return params
+}
 
 func main() {
 
@@ -997,6 +1062,7 @@ func main() {
 	my_db := db.DBStart()
 	defer my_db.Close()
 	go CheckTrains(my_db, bot)
+	go CheckMeditates(my_db, bot)
 	BotUpdateLoop(bot, my_db)
 
 }

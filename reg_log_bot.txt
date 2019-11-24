@@ -357,3 +357,7 @@
 11-22-2019 14:02:14 User YUART, ID is 375806606, answer on quest5 [0, 0, 3]
 11-22-2019 14:02:14 User ID is 375806606, answer the question quest5
 11-22-2019 14:02:14 User ID is 375806606, complete the registration
+11-24-2019 18:02:37 User ID is 375806606, add atributes. Old attributes: 1, 3, 14. New attributes: 1, 1, 0
+11-24-2019 18:02:37 User ID is 375806606, recalc stats
+11-24-2019 18:05:04 User ID is 375806606, add atributes. Old attributes: 2, 4, 14. New attributes: 1, 1, 0
+11-24-2019 18:05:04 User ID is 375806606, recalc stats

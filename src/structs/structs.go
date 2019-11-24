@@ -29,6 +29,12 @@ type UserCoreStats struct {
 	Agi int
 	Int int
 }
+type UserElementsStats struct {
+	Fire int
+	Water int
+	Earth int
+	Wind int
+}
 type FullUserStats struct {
 	Id 				  int
 	Title 			  string

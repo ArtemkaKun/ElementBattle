@@ -378,8 +378,8 @@ func RecalcStats(my_db *sql.DB, user_id int) {
 		user_id, "", GetRace(my_db, user_id), 15, 1,
 		0, 100, 1, hp,mana, stamina,completed_user_stats.Str,
 		completed_user_stats.Agi, completed_user_stats.Int, armor, magic_armor, stun_chance,
-		dodge_chance, crit_chance, effect_chance, nil,
-		nil, nil, nil, nil, nil}
+		dodge_chance, crit_chance, effect_chance, 0,
+		0, 0, 0, 0, 0}
 	_, err = stmtIns.Exec(
 		user_stats.Hp, user_stats.Mp, user_stats.Stamina, user_stats.Armor, user_stats.Stun_chance,
 		user_stats.Dodge_chance, user_stats.Crit_chance, user_stats.Effect_chance, user_stats.Magic_armor,
@@ -393,6 +393,42 @@ func RecalcStats(my_db *sql.DB, user_id int) {
 	log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
 
 	err = stmtIns.Close()
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+}
+func GetElementsStats(my_db *sql.DB, user_id int) structs.UserElementsStats {
+	stmtOut, err := my_db.Prepare("SELECT fire_element, water_element, earth_element, wind_element FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	user_elements := structs.UserElementsStats{}
+	err = stmtOut.QueryRow(user_id).Scan(&user_elements.Fire, &user_elements.Water, &user_elements.Earth, &user_elements.Wind)
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.Close()
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	return user_elements
+}
+func SetElements(my_db *sql.DB, user_id int, new_stats structs.UserElementsStats) {
+	stmtIns, err := my_db.Prepare("UPDATE users_stats SET fire_element = ?, water_element = ?, earth_element = ?, wind_element = ? WHERE user_id = ?")
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	_, err = stmtIns.Exec(new_stats.Fire, new_stats.Water, new_stats.Earth, new_stats.Wind, user_id)
+
 	if err != nil {
 		log_writer.ErrLogHandler(err.Error())
 		panic(err.Error())
