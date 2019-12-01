@@ -1,20 +1,2 @@
-11-16-2019 13:40:01Error 1062: Duplicate entry '970898716' for key 'PRIMARY'
-11-16-2019 13:47:39Error 1062: Duplicate entry '970898716' for key 'PRIMARY'
-11-16-2019 14:49:47Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE user_id = ?' at line 1
-11-17-2019 12:36:54Error 1054: Unknown column 'HP' in 'field list'
-11-17-2019 12:38:44sql: expected 16 arguments, got 15
-11-18-2019 13:27:44Error 1136: Column count doesn't match value count at row 1
-11-18-2019 15:20:27sql: Scan error on column index 2, name "intelligence": destination not a pointer
-11-19-2019 14:29:12Error 1146: Table 'elementbattles.user_stats' doesn't exist
-11-22-2019 13:52:11Error 1054: Unknown column 'is_ban' in 'field list'
-11-22-2019 13:55:06Error 1136: Column count doesn't match value count at row 1
-11-22-2019 14:03:31Error 1054: Unknown column 'enemy_area' in 'where clause'
-11-22-2019 14:05:06Error 1136: Column count doesn't match value count at row 1
-11-22-2019 14:09:20Error 1054: Unknown column 'enemy_stun' in 'field list'
-11-22-2019 14:10:20Error 1054: Unknown column 'enemy_meele' in 'field list'
-11-22-2019 14:10:47Error 1054: Unknown column 'user_stun' in 'field list'
-11-22-2019 14:11:32Error 1054: Unknown column 'enemy_stun' in 'field list'
-11-22-2019 14:12:18Error 1054: Unknown column 'user_stun' in 'field list'
-11-23-2019 16:40:55Error 1292: Incorrect datetime value: '11-23-2019 16:40:55' for column 'training_time' at row 1
-11-23-2019 16:41:41Error 1054: Unknown column 'trainig_time' in 'field list'
-11-23-2019 16:41:58Error 1062: Duplicate entry '375806606' for key 'PRIMARY'
+11-25-2019 17:43:30Forbidden: bot was blocked by the user
+11-25-2019 19:26:19Bad Request: query is too old and response timeout expired or query ID is invalid

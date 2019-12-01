@@ -467,3 +467,44 @@ func SetElements(my_db *sql.DB, user_id int, new_stats structs.UserElementsStats
 		panic(err.Error())
 	}
 }
+func GetEnergy(my_db *sql.DB, user_id int) int {
+	stmtOut, err := my_db.Prepare("SELECT energy FROM users_stats WHERE user_id = ?")
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	var energy int
+	err = stmtOut.QueryRow(user_id).Scan(&energy)
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtOut.Close()
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	return energy
+}
+func UpdateEnergy(my_db *sql.DB) {
+	stmtIns, err := my_db.Prepare("UPDATE users_stats SET energy = 15")
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	_, err = stmtIns.Exec()
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+
+	err = stmtIns.Close()
+	if err != nil {
+		log_writer.ErrLogHandler(err.Error())
+		panic(err.Error())
+	}
+}
