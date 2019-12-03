@@ -9,6 +9,7 @@ import (
 	"github.com/Syfaro/telegram-bot-api"
 	_ "github.com/go-sql-driver/mysql"
 	"keyboards"
+	"last_message"
 	"log"
 	"log_writer"
 	"math/rand"
@@ -46,8 +47,9 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 	}
 
 	for update := range updates {
+		lang := 0
+
 		if update.CallbackQuery != nil {
-			lang := 0
 			switch update.CallbackQuery.From.LanguageCode {
 			case "ru", "ua":
 				lang = 1
@@ -75,7 +77,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 								msg.ReplyMarkup = keyboards.Eng_keyboard.First_quest_keyboard
 							case 1:
 								msg.Text = "Хорошо. Я задам несколько вопросов, которые нужны для моего рапорта, но не пытайся мне лгать\n" +
-									"Для начала скажи мне - почему Ты сдесь?"
+									"Для начала скажи мне - почему Ты здесь?"
 								msg.ReplyMarkup = keyboards.Rus_keyboard.First_quest_keyboard
 							}
 
@@ -83,10 +85,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, was registered", user_info.User_nickname, user_info.User_id)}
 							go log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
 
-							_, err := my_bot.Send(msg)
-							if err != nil {
-								go log_writer.ErrLogHandler(err.Error())
-							}
+							SendMsg(update, database, my_bot, msg)
 						} else {
 							log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, try to register, but there is user with same id already!", user_info.User_nickname, user_info.User_id)}
 							go log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
@@ -95,13 +94,10 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							case 0:
 								msg.Text = "Hej, I am already have you on my list!"
 							case 1:
-								msg.Text = "Hej, I am already have you on my list!"
+								msg.Text = "Эй, ты уже записан!"
 							}
 
-							_, err := my_bot.Send(msg)
-							if err != nil {
-								go log_writer.ErrLogHandler(err.Error())
-							}
+							SendMsg(update, database, my_bot, msg)
 						}
 					} else {
 						fight_allert(lang, my_bot, update)
@@ -118,15 +114,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "What is your race?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "What is your race?"
+							att_text = "Откуда ты родом?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboard.Second_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -142,15 +135,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "What is your race?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "What is your race?"
+							att_text = "Откуда ты родом?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboard.Second_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -166,15 +156,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "What is your race?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "What is your race?"
+							att_text = "Откуда ты родом?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboard.Second_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -190,15 +177,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "What is your race?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "What is your race?"
+							att_text = "Откуда ты родом?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest1", keyboard.Second_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -214,16 +198,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "You have a chocolate cake. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "You have a chocolate cake. What will you do?"
+							att_text = "За хорошую работу ты получил шоколадный торт. Что будешь делать дальше?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
 						go users_stats.AddRace(database, update.CallbackQuery.From.ID, "Human")
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboard.Third_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 
 					} else {
 						fight_allert(lang, my_bot, update)
@@ -240,15 +222,13 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "You have a chocolate cake. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "You have a chocolate cake. What will you do?"
+							att_text = "За хорошую работу ты получил шоколадный торт. Что будешь делать дальше?"
 							keyboard = keyboards.Rus_keyboard
 						}
 						go users_stats.AddRace(database, update.CallbackQuery.From.ID, "Elf")
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboard.Third_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -264,16 +244,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "You have a chocolate cake. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "You have a chocolate cake. What will you do?"
+							att_text = "За хорошую работу ты получил шоколадный торт. Что будешь делать дальше?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
 						go users_stats.AddRace(database, update.CallbackQuery.From.ID, "Dwarf")
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboard.Third_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -289,16 +267,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "You have a chocolate cake. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "You have a chocolate cake. What will you do?"
+							att_text = "За хорошую работу ты получил шоколадный торт. Что будешь делать дальше?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
 						go users_stats.AddRace(database, update.CallbackQuery.From.ID, "Orc")
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboard.Third_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -314,16 +290,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "You have a chocolate cake. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "You have a chocolate cake. What will you do?"
+							att_text = "За хорошую работу ты получил шоколадный торт. Что будешь делать дальше?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
 						go users_stats.AddRace(database, update.CallbackQuery.From.ID, "Unknown")
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest2", keyboard.Third_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -339,15 +313,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Your friend has serious injury. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Твой напарник серьезно раненен. Что ты сделаешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboard.Forth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 
 					} else {
 						fight_allert(lang, my_bot, update)
@@ -364,15 +335,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Your friend has serious injury. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Твой напарник серьезно раненен. Что ты сделаешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboard.Forth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -388,15 +356,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Your friend has serious injury. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Твой напарник серьезно раненен. Что ты сделаешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboard.Forth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -412,15 +377,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Your friend has serious injury. What will you do?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Твой напарник серьезно раненен. Что ты сделаешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest3", keyboard.Forth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -433,19 +395,15 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 						switch lang {
 						case 0:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "What are you looking here?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Что ты здесь ищешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboard.Fifth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-
-						}
 
 					} else {
 						fight_allert(lang, my_bot, update)
@@ -459,18 +417,15 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 						switch lang {
 						case 0:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "What are you looking here?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Что ты здесь ищешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboard.Fifth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -483,18 +438,15 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 						switch lang {
 						case 0:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "What are you looking here?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Что ты здесь ищешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboard.Fifth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -507,18 +459,15 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 						switch lang {
 						case 0:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "What are you looking here?"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Your friend has serious injury. What will you do?"
+							att_text = "Что ты здесь ищешь?"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest4", keyboard.Fifth_quest_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -534,15 +483,13 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
+							att_text = "Все, это был последний вопрос. Теперь можешь делать что угодно. И постарайся не сдохнуть"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboard.Menu_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
+
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -558,15 +505,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
+							att_text = "Все, это был последний вопрос. Теперь можешь делать что угодно. И постарайся не сдохнуть"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboard.Menu_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -582,15 +526,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
+							att_text = "Все, это был последний вопрос. Теперь можешь делать что угодно. И постарайся не сдохнуть"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboard.Menu_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -606,15 +547,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							att_text = "Ok, that's all for now. Do whatever you want and try not to die"
+							att_text = "Все, это был последний вопрос. Теперь можешь делать что угодно. И постарайся не сдохнуть"
 							keyboard = keyboards.Rus_keyboard
 						}
 
-						_, err := my_bot.Send(RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
+						SendMsg(update, database, my_bot, RegQuestion(update.CallbackQuery.Message.Chat.ID, user_stats, database, update.CallbackQuery.From.ID,
 							update.CallbackQuery.From.UserName, "quest5", keyboard.Menu_keyboard, att_text))
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -630,17 +568,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							message = fmt.Sprintf("Your Lvl: %v \nExperiense you have: %v \nExperience need to next Lvl: %v \nSkill points you have: %v \nYour energy: %v \nYour race: %v \nYour HP: %v \nYour stamina: %v \nYour MP: %v \n\nAttributes\n\nYour strength: %v \nYour agility: %v \nYour intelligence: %v \nYour armor: %v \nYour magic armor: %v \nYour stun chance: %v%% \nYour crit chance: %v%% \nYour dodge chance: %v%% \nYour magic effect chance: %v%% \nYour meele miss chance: %v%% \nYour range miss chance: %v%% \n\nMagic elements\n\nFire element: %v \nWater element: %v \nEarth element: %v \nWind element: %v \n", user_stast.Lvl, user_stast.Ex_now, user_stast.Ex_next_lvl, user_stast.Skill_point, user_stast.Energy, user_stast.Race, user_stast.Hp, user_stast.Stamina, user_stast.Mp, user_stast.Str, user_stast.Agi, user_stast.Int, user_stast.Armor, user_stast.Magic_armor, user_stast.Stun_chance, user_stast.Crit_chance, user_stast.Dodge_chance, user_stast.Effect_chance, user_stast.Meele_miss_chance, user_stast.Range_miss_chance, user_stast.Fire, user_stast.Water, user_stast.Earth, user_stast.Wind)
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							message = fmt.Sprintf("Your Lvl: %v \nExperiense you have: %v \nExperience need to next Lvl: %v \nSkill points you have: %v \nYour energy: %v \nYour race: %v \nYour HP: %v \nYour stamina: %v \nYour MP: %v \n\nAttributes\n\nYour strength: %v \nYour agility: %v \nYour intelligence: %v \nYour armor: %v \nYour magic armor: %v \nYour stun chance: %v%% \nYour crit chance: %v%% \nYour dodge chance: %v%% \nYour magic effect chance: %v%% \nYour meele miss chance: %v%% \nYour range miss chance: %v%% \n\nMagic elements\n\nFire element: %v \nWater element: %v \nEarth element: %v \nWind element: %v \n", user_stast.Lvl, user_stast.Ex_now, user_stast.Ex_next_lvl, user_stast.Skill_point, user_stast.Energy, user_stast.Race, user_stast.Hp, user_stast.Stamina, user_stast.Mp, user_stast.Str, user_stast.Agi, user_stast.Int, user_stast.Armor, user_stast.Magic_armor, user_stast.Stun_chance, user_stast.Crit_chance, user_stast.Dodge_chance, user_stast.Effect_chance, user_stast.Meele_miss_chance, user_stast.Range_miss_chance, user_stast.Fire, user_stast.Water, user_stast.Earth, user_stast.Wind)
+							message = fmt.Sprintf("Уровень: %v \nОпыт: %v \nОпыта нужно на следующий уровень: %v \nСвободные очки умений: %v \nЭнергия: %v \nРаса: %v \nЗдоровье: %v \nВыносливость: %v \nМана: %v \n\nХарактеристики\n\nСила: %v \nЛовкость: %v \nИнтиллект: %v \nБроня: %v \nМагическая броня: %v \nШанс оглушить противника: %v%% \nШанс нанести критический удар: %v%% \nШанс уклониться от атаки: %v%% \nШанс наложить магический эффект: %v%% \nШанс промаха в ближнем бою: %v%% \nШанс промаха в дальнем бою: %v%% \n\nМагические элементы\n\nОгонь: %v \nВода: %v \nЗемля: %v \nВоздух: %v \n", user_stast.Lvl, user_stast.Ex_now, user_stast.Ex_next_lvl, user_stast.Skill_point, user_stast.Energy, user_stast.Race, user_stast.Hp, user_stast.Stamina, user_stast.Mp, user_stast.Str, user_stast.Agi, user_stast.Int, user_stast.Armor, user_stast.Magic_armor, user_stast.Stun_chance, user_stast.Crit_chance, user_stast.Dodge_chance, user_stast.Effect_chance, user_stast.Meele_miss_chance, user_stast.Range_miss_chance, user_stast.Fire, user_stast.Water, user_stast.Earth, user_stast.Wind)
 							keyboard = keyboards.Rus_keyboard
 						}
 
 						msg.Text = message
 						msg.ReplyMarkup = keyboard.Menu_keyboard
 
-						_, err := my_bot.Send(msg)
-						if err != nil {
-							go log_writer.ErrLogHandler(err.Error())
-						}
+						SendMsg(update, database, my_bot, msg)
 					} else {
 						fight_allert(lang, my_bot, update)
 					}
@@ -657,7 +592,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 									message = "Choose the location"
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "Choose the location"
+									message = "Выберите локацию"
 									keyboard = keyboards.Rus_keyboard
 								}
 								msg.Text = message
@@ -665,10 +600,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 								log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, started adventure", update.CallbackQuery.From.UserName, update.CallbackQuery.From.ID)}
 								go log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									go log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -691,17 +623,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 									message = "Back to menu"
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "Back to menu"
+									message = "Вернуться в меню"
 									keyboard = keyboards.Rus_keyboard
 								}
 
 								msg.Text = message
 								msg.ReplyMarkup = keyboard.Menu_keyboard
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -725,17 +654,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 									message = "Back to areas menu"
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "Back to areas menu"
+									message = "Вернуться в меню локаций"
 									keyboard = keyboards.Rus_keyboard
 								}
 
 								msg.Text = message
 								msg.ReplyMarkup = keyboard.Area_keyboard
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									go log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -759,7 +685,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 									message = "You are in a forest"
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "You are in a forest"
+									message = "Вы в лесу"
 									keyboard = keyboards.Rus_keyboard
 								}
 
@@ -771,10 +697,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 								log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, go to forest", update.CallbackQuery.From.UserName, update.CallbackQuery.From.ID)}
 								go log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									go log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -798,7 +721,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 									message = "You are in on mountain plato"
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "You are in on mountain plato"
+									message = "Вы на плато"
 									keyboard = keyboards.Rus_keyboard
 								}
 
@@ -809,10 +732,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 								log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, go to mountains", update.CallbackQuery.From.UserName, update.CallbackQuery.From.ID)}
 								go log_writer.LogWrite(log_insert, log_writer.Log_files.Adventure_log)
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									go log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -827,10 +747,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 						if !trains.IsTraining(database, update.CallbackQuery.From.ID) {
 							if !meditates.IsMeditate(database, update.CallbackQuery.From.ID) {
 								if users_stats.GetEnergy(database, update.CallbackQuery.From.ID) > 0 {
-									_, err := my_bot.Send(EnemySearcher(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
-									if err != nil {
-										log_writer.ErrLogHandler(err.Error())
-									}
+									SendMsg(update, database, my_bot, EnemySearcher(update.CallbackQuery.Message.Chat.ID, database, update.CallbackQuery.From.ID))
 								} else {
 									msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
 
@@ -842,17 +759,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 										message = "You can't battle more today!"
 										keyboard = keyboards.Eng_keyboard
 									case 1:
-										message = "You can't battle more today!"
+										message = "Вы больше не можете сражаться сегодня!"
 										keyboard = keyboards.Rus_keyboard
 									}
 
 									msg.Text = message
 									msg.ReplyMarkup = keyboard.Area_action_keyboard
 
-									_, err := my_bot.Send(msg)
-									if err != nil {
-										go log_writer.ErrLogHandler(err.Error())
-									}
+									SendMsg(update, database, my_bot, msg)
 								}
 							} else {
 								meditation_allert(lang, my_bot, update)
@@ -890,17 +804,14 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 										message = "You are injured! Try to rest"
 										keyboard = keyboards.Eng_keyboard
 									case 1:
-										message = "You are injured! Try to rest"
+										message = "Вы ранены! Постарайтесь отдохнуть"
 										keyboard = keyboards.Rus_keyboard
 									}
 
 									msg.Text = message
 									msg.ReplyMarkup = keyboard.Area_action_keyboard
 
-									_, err := my_bot.Send(msg)
-									if err != nil {
-										go log_writer.ErrLogHandler(err.Error())
-									}
+									SendMsg(update, database, my_bot, msg)
 								}
 							} else {
 								meditation_allert(lang, my_bot, update)
@@ -929,7 +840,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 									case 0:
 										message = "You set a block"
 									case 1:
-										message = "You set a block"
+										message = "Вы поставили блок"
 									}
 
 									msg.Text = message
@@ -952,7 +863,7 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 									case 0:
 										message = "You have not stamina!"
 									case 1:
-										message = "You have not stamina!"
+										message = "Вы истощены!"
 									}
 
 									msg.Text = message
@@ -985,13 +896,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 							message = "You have surrendered"
 							keyboard = keyboards.Eng_keyboard
 						case 1:
-							message = "You have surrendered"
+							message = "Вы сдались"
 							keyboard = keyboards.Rus_keyboard
 						}
 
 						msg.Text = message
 						msg.ReplyMarkup = keyboard.Area_action_keyboard
-
 
 						_, err := my_bot.Send(msg)
 						if err != nil {
@@ -1016,20 +926,17 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 								switch lang {
 								case 0:
-									message = "You are start training!"
+									message = fmt.Sprintf("You are start training! Training finish at %v", need_time)
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "You are start training!"
+									message = fmt.Sprintf("Вы начали тренировку. Окончание тренировки в %v", need_time)
 									keyboard = keyboards.Rus_keyboard
 								}
 
 								msg.Text = message
 								msg.ReplyMarkup = keyboard.Area_action_keyboard
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									go log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -1055,20 +962,17 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 								switch lang {
 								case 0:
-									message = "You are start meditate!"
+									message = fmt.Sprintf("You are start meditate! Meditate finish at %v", need_time)
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "You are start meditate!"
+									message = fmt.Sprintf("Вы начали медитировать. Окончание медитации в %v", need_time)
 									keyboard = keyboards.Rus_keyboard
 								}
 
 								msg.Text = message
 								msg.ReplyMarkup = keyboard.Area_action_keyboard
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									go log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -1094,20 +998,17 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 								switch lang {
 								case 0:
-									message = "You are start rest!"
+									message = fmt.Sprintf("You are start rest! Rest finish at %v", need_time)
 									keyboard = keyboards.Eng_keyboard
 								case 1:
-									message = "You are start rest!"
+									message = fmt.Sprintf("Вы начали отдых. Окончание отдыха в %V", need_time)
 									keyboard = keyboards.Rus_keyboard
 								}
 
 								msg.Text = message
 								msg.ReplyMarkup = keyboard.Area_action_keyboard
 
-								_, err := my_bot.Send(msg)
-								if err != nil {
-									go log_writer.ErrLogHandler(err.Error())
-								}
+								SendMsg(update, database, my_bot, msg)
 							} else {
 								meditation_allert(lang, my_bot, update)
 							}
@@ -1136,6 +1037,16 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 
 		chat_id := update.Message.Chat.ID
 		if !users_info.CheckBan(database, update.Message.From.ID) {
+
+			switch update.Message.From.LanguageCode {
+			case "ru", "ua":
+				lang = 1
+			case "en":
+				lang = 0
+			default:
+				lang = 0
+			}
+
 			msg := tgbotapi.NewMessage(chat_id, "")
 			user_info := structs.UserInfo{update.Message.From.ID, update.Message.From.UserName, update.Message.From.LastName, update.Message.From.FirstName, update.Message.From.LanguageCode, 0}
 
@@ -1143,36 +1054,60 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 			case "start":
 				if !users_info.RegCheck(database, user_info) {
 					log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, start bot", user_info.User_nickname, user_info.User_id)}
-					log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
-					msg.Text = "Hello, newcomer. This is a dangerous world, full of monsters, bandits, demons and other evil, that want to kill you. If you want to survive - follow my instructions!\n"
-					msg.ReplyMarkup = keyboards.Eng_keyboard.Reg_keyboard
+					go log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
+					switch lang {
+					case 0:
+						msg.Text = "Hello, newcomer. This is a dangerous world, full of monsters, bandits, demons and other evil, that want to kill you. If you want to survive - follow my instructions!\n"
+						msg.ReplyMarkup = keyboards.Eng_keyboard.Reg_keyboard
+					case 1:
+						msg.Text = "Привет, новичек. Этот мир наполнен монстрами, бандитами, демонами и другим злом, котороые хочет убить тебя. Если хочешь выжить - следуй моим инструкциям!\n"
+						msg.ReplyMarkup = keyboards.Rus_keyboard.Reg_keyboard
+					}
+
+					last_message.AddNewUser(database, user_info.User_id)
 				} else {
 					log_insert := structs.LogRequest{time.Now(), fmt.Sprintf(" User %v, ID is %v, start bot, but this user already registered!", user_info.User_nickname, user_info.User_id)}
 					log_writer.LogWrite(log_insert, log_writer.Log_files.Reg_log)
 					mes_for_registered := ""
-					mes_for_registered = fmt.Sprintf("Hello, %v. What are you doing here? Or you just lost, little chicken?\n", user_info.User_nickname)
-
+					switch lang {
+					case 0:
+						mes_for_registered = fmt.Sprintf("Hello, %v. What are you doing here? Or you just lost, little chicken?\n", user_info.User_nickname)
+					case 1:
+						mes_for_registered = fmt.Sprintf("Привет, %v. Что ты здесь делаешь? Или ты опять потерялся, сопляк?\n", user_info.User_nickname)
+					}
 					msg.Text = mes_for_registered
 				}
 			case "menu":
 				if users_info.RegCheck(database, user_info) {
 					if users_reg_question.CheckAllAnswers(database, update.Message.From.ID) {
 						if !trains.IsTraining(database, update.Message.From.ID) {
-							msg.Text = "You are in menu"
-							msg.ReplyMarkup = keyboards.Eng_keyboard.Menu_keyboard
-						} else {
-							_, err := my_bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, "You are training now!"))
-							if err != nil {
-								log_writer.ErrLogHandler(err.Error())
+							switch lang {
+							case 0:
+								msg.Text = "You are in menu"
+								msg.ReplyMarkup = keyboards.Eng_keyboard.Menu_keyboard
+							case 1:
+								msg.Text = "Вы в главном меню"
+								msg.ReplyMarkup = keyboards.Rus_keyboard.Menu_keyboard
 							}
+
+						} else {
+							traning_allert(lang, my_bot, update)
 						}
 					} else {
-						msg.Text = "Complete all answers"
-
+						switch lang {
+						case 0:
+							msg.Text = "Complete all answers"
+						case 1:
+							msg.Text = "Сначала ответь на все вопросы!"
+						}
 					}
 				} else {
-					msg.Text = "You need to register first!"
-
+					switch lang {
+					case 0:
+						msg.Text = "You need to register first!"
+					case 1:
+						msg.Text = "Тебе нужно зарегистрироваться!"
+					}
 				}
 			//case "registration":
 			//	msg.Text = "Registration"
@@ -1200,10 +1135,12 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 			default:
 				msg.Text = "Bad command"
 			}
-			_, err := my_bot.Send(msg)
+			bot_msg, err := my_bot.Send(msg)
 			if err != nil {
 				log_writer.ErrLogHandler(err.Error())
 			}
+
+			last_message.SetNewMessage(database, update.Message.From.ID, bot_msg.MessageID)
 		} else {
 			_, err := my_bot.Send(tgbotapi.NewMessage(chat_id, "You are in prison"))
 			if err != nil {
@@ -1213,6 +1150,23 @@ func BotUpdateLoop(my_bot *tgbotapi.BotAPI, database *sql.DB) {
 	}
 }
 
+func SendMsg(update tgbotapi.Update, database *sql.DB, my_bot *tgbotapi.BotAPI, msg tgbotapi.MessageConfig) {
+	prev_mess := tgbotapi.DeleteMessageConfig{update.CallbackQuery.Message.Chat.ID, last_message.GetLastMessage(database, update.CallbackQuery.From.ID)}
+
+	if prev_mess.MessageID != 0 {
+		_, err := my_bot.DeleteMessage(prev_mess)
+		if err != nil {
+			go log_writer.ErrLogHandler(err.Error())
+		}
+	}
+	bot_mes, err := my_bot.Send(msg)
+	if err != nil {
+		go log_writer.ErrLogHandler(err.Error())
+	}
+
+	last_message.SetNewMessage(database, update.CallbackQuery.From.ID, bot_mes.MessageID)
+}
+
 func traning_allert(lang int, my_bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	message := ""
 
@@ -1220,7 +1174,7 @@ func traning_allert(lang int, my_bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	case 0:
 		message = "You are training now!"
 	case 1:
-		message = "You are training now!"
+		message = "Ты сейчас тренируешься!"
 	}
 
 	_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, message))
@@ -1235,7 +1189,7 @@ func meditation_allert(lang int, my_bot *tgbotapi.BotAPI, update tgbotapi.Update
 	case 0:
 		message = "You are meditate now!"
 	case 1:
-		message = "You are meditate now!"
+		message = "Ты сейчас медитируешь!"
 	}
 
 	_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, message))
@@ -1249,7 +1203,7 @@ func fight_allert(lang int, my_bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	case 0:
 		att_text = "You are fighting now!"
 	case 1:
-		att_text = "You are fighting now!"
+		att_text = "Ты сражаешься!"
 	}
 	_, err := my_bot.Send(tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, att_text))
 	if err != nil {

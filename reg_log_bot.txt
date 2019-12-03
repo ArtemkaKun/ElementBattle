@@ -162,3 +162,28 @@
 11-25-2019 21:21:45 User ID is 163742672, complete the registration
 11-25-2019 21:23:35 User ID is 494680355, add atributes. Old attributes: 1, 12, 5. New attributes: 1, 1, 0
 11-25-2019 21:23:35 User ID is 494680355, recalc stats
+12-03-2019 12:21:10 User YUART, ID is 375806606, start bot
+12-03-2019 12:21:30 User YUART, ID is 375806606, was registered
+12-03-2019 12:28:29 User YUART, ID is 375806606, start bot
+12-03-2019 12:28:36 User YUART, ID is 375806606, was registered
+12-03-2019 12:36:26 User YUART, ID is 375806606, start bot
+12-03-2019 12:36:28 User YUART, ID is 375806606, was registered
+12-03-2019 13:24:42 User YUART, ID is 375806606, start bot
+12-03-2019 13:24:45 User YUART, ID is 375806606, was registered
+12-03-2019 13:24:53 User ID is 375806606, add atributes. Old attributes: 1, 1, 1. New attributes: 1, 1, 1
+12-03-2019 13:24:53 User YUART, ID is 375806606, answer on quest1 [1, 1, 1]
+12-03-2019 13:24:53 User ID is 375806606, answer the question quest1
+12-03-2019 13:24:56 User ID is 375806606, choose race Unknown
+12-03-2019 13:24:56 User ID is 375806606, add atributes. Old attributes: 2, 2, 2. New attributes: 1, 1, 1
+12-03-2019 13:24:56 User YUART, ID is 375806606, answer on quest2 [1, 1, 1]
+12-03-2019 13:24:56 User ID is 375806606, answer the question quest2
+12-03-2019 13:24:57 User ID is 375806606, add atributes. Old attributes: 3, 3, 3. New attributes: 1, 1, 1
+12-03-2019 13:24:57 User YUART, ID is 375806606, answer on quest3 [1, 1, 1]
+12-03-2019 13:24:57 User ID is 375806606, answer the question quest3
+12-03-2019 13:25:00 User ID is 375806606, add atributes. Old attributes: 4, 4, 4. New attributes: 1, 1, 1
+12-03-2019 13:25:00 User YUART, ID is 375806606, answer on quest4 [1, 1, 1]
+12-03-2019 13:25:00 User ID is 375806606, answer the question quest4
+12-03-2019 13:25:04 User ID is 375806606, add atributes. Old attributes: 5, 5, 5. New attributes: 1, 1, 1
+12-03-2019 13:25:04 User YUART, ID is 375806606, answer on quest5 [1, 1, 1]
+12-03-2019 13:25:04 User ID is 375806606, answer the question quest5
+12-03-2019 13:25:04 User ID is 375806606, complete the registration

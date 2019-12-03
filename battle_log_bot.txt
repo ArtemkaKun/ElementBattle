@@ -65,3 +65,9 @@
 11-25-2019 19:27:19ID is 375806606 was attacked by wolf
 11-25-2019 19:27:29 ID is 375806606, attack. wolf was attacked by You on 15. wolf was defeated!
 11-25-2019 19:27:30ID is 375806606 was attacked by wolf
+12-03-2019 13:25:45 ID is 375806606, was find enemy wolf
+12-03-2019 13:25:49ID is 375806606, has miss
+12-03-2019 13:25:49ID is 375806606 was attacked by wolf
+12-03-2019 13:26:03ID is 375806606, attack
+12-03-2019 13:26:03ID is 375806606 was attacked by wolf
+12-03-2019 13:26:19 ID is 375806606, was find enemy wolf

@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3e240eb0-7ddc-43d2-b695-a3c70fb1b2e0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adventure_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/adventure_log_bot.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/battle_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/battle_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reg_log_bot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/reg_log_bot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" afterDir="false" />
@@ -145,22 +148,30 @@
     </ignored-roots>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1575368654343">
+    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1575373910532">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1575368654343" />
-    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1575368654343">
+    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1575373910532" />
+    <state x="598" y="122" key="CommitChangelistDialog2" timestamp="1575378250459">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1575368654343" />
-    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1575368654343">
+    <state x="598" y="122" key="CommitChangelistDialog2/0.0.1920.1050@0.0.1920.1050" timestamp="1575378250459" />
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1575376016955">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1575368654343" />
-    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1575368654343">
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1575376016955" />
+    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1575376016955">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1575368654343" />
+    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1575376016955" />
+    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1575376016954">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1575376016954" />
+    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1575376016955">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1575376016955" />
     <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1575201542285">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
