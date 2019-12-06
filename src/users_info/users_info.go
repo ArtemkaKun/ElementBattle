@@ -7,6 +7,7 @@ import (
 	"log_writer"
 	"structs"
 	"users_reg_question"
+	"users_skilltree"
 	"users_stats"
 )
 
@@ -32,6 +33,7 @@ func RegUser(my_db *sql.DB, user_info structs.UserInfo) {
 	users_stats.RegUser(my_db, user_info)
 	users_reg_question.RegUser(my_db, user_info)
 	buffer_areas.RegUser(my_db, user_info)
+	users_skilltree.RegUser(my_db, user_info)
 }
 func RegCheck(my_db *sql.DB, user_info structs.UserInfo) bool {
 	stmtOut, err := my_db.Prepare("SELECT user_id FROM users_info WHERE user_id = ?")
