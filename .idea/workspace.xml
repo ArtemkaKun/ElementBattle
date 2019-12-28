@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3e240eb0-7ddc-43d2-b695-a3c70fb1b2e0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/Syfaro/telegram-bot-api/helpers_test.go" afterDir="false" />
@@ -15,7 +14,6 @@
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/bot_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-telegram-bot-api/telegram-bot-api/helpers_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/users_info/users_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/users_info/users_info.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +71,7 @@
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.go" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -154,6 +152,10 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="598" y="122" key="CommitChangelistDialog2/0.0.1920.1050@0.0.1920.1050" timestamp="1575378250459" />
+    <state x="739" y="269" key="FileChooserDialogImpl" timestamp="1575635526598">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="739" y="269" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1575635526598" />
     <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1575378359645">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
